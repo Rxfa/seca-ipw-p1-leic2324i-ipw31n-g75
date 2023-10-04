@@ -1,0 +1,12 @@
+{
+  "name": "a1",
+  "version": "1.0.0",
+  "description": "IPW-2324",
+  "type": "module",
+  "main": "copyProperties.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Rxfa",
+  "license": "ISC"
+}
