@@ -1,5 +1,5 @@
 import assert from "assert";
-import { copyProperties } from "./copyProperties.js";
+import { copyProperties } from "./2.js";
 
 Object.prototype.copyProperties = function(validators){
     return copyProperties(this, validators)

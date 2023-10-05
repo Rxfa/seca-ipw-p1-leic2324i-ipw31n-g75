@@ -1,5 +1,5 @@
 import assert from "assert";
-import { validateProperty } from "./validateProperty.js";
+import { validateProperty } from "./1.js";
 
 export function copyProperties(obj, propValidators){
     let newObj = {};
