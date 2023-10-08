@@ -11,8 +11,9 @@ var goodUsers = [
 
  function checkUsersValid(validUsers){
     return function(givenUsers){
-        const arr = validUsers.map(item => JSON.stringify(item))
-        return givenUsers.every(user => arr.includes(JSON.stringify(user)))
+        return givenUsers.every(givenUser => 
+            validUsers.find( validUser => validUser.id === givenUser.id) !== undefined
+            )
     }
  }
  

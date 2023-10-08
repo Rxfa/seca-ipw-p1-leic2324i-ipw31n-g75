@@ -1,8 +1,8 @@
 import assert from "assert";
 
-Array.prototype.associateWith = function(predicate){
+Array.prototype.associateWith = function(transformation){
     let obj = {}
-    this.forEach(element => obj[element] = predicate(element))
+    this.forEach(element => obj[element] = transformation(element))
     return obj
 }
 
