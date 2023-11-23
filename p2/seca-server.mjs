@@ -11,4 +11,7 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.post('/users', Api.insertUser)
 app.get('/users', Api.listUsers)
 
+app.get("/groups", Api.listGroups)
+app.post("/groups", Api.createGroup)
+
 app.listen(3000, () => console.log(`listening on port 3000`))
