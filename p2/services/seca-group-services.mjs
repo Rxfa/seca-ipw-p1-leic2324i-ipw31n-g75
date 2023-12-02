@@ -1,4 +1,5 @@
 import errors from "../web/errors.mjs";
+import {isValidString} from "../utils/utils.mjs";
 
 export default function(groupData, userData, eventData){
     if(!groupData){
@@ -19,17 +20,6 @@ export default function(groupData, userData, eventData){
         createGroup: createGroup,
         addEvent: addEvent,
         removeEvent: removeEvent,
-    }
-
-    async function createGroup(userToken, group){
-        const user = await userData.getUser(userToken)
-        if(!user){
-            throw errors.USER_NOT_FOUND()
-        }
-        if(!isValidString(userToken, group.name)) {
-            throw errors.INVALID_PARAMETER("name")
-        }
-        return await groupData.createGroup(user.id, group)
     }
 
     async function listGroups(userToken, q, skip = 0, limit = 50){
@@ -55,6 +45,18 @@ export default function(groupData, userData, eventData){
         }
         return await groupData.listGroups(user.id, q, skip, limit)
     }
+
+    async function createGroup(userToken, group){
+        const user = await userData.getUser(userToken)
+        if(!user){
+            throw errors.USER_NOT_FOUND()
+        }
+        if(!isValidString(userToken, group.name)) {
+            throw errors.INVALID_PARAMETER("name")
+        }
+        return await groupData.createGroup(user.id, group)
+    }
+
 
     async function getGroup(userToken, groupID){
         const user = await userData.getUser(userToken)
@@ -85,20 +87,28 @@ export default function(groupData, userData, eventData){
         if(!user){
             throw errors.USER_NOT_FOUND()
         }
-        return await groupData.deleteGroup(user.id, groupID)
+        const groups = await groupData.deleteGroup(user.id, groupID)
+        if(!groups){
+            throw errors.GROUP_NOT_FOUND()
+        }
+        return groups
     }
 
     async function addEvent(userToken, eventId, groupId){
         const user = await userData.getUser(userToken)
         const group = await groupData.getGroup(user.id, groupId)
         if(!group){
-            throw errors.GROUP_NOT_FOUND()
+            throw errors.GROUP_NOT_FOUND(groupId)
         }
         const event = await eventData.getEvent(eventId)
         if(!event){
-            throw errors.EVENT_ALREADY_EXISTS()
+            throw errors.EVENT_ALREADY_EXISTS(eventId)
         }
-        return await groupData.addEvent(user.id, groupId, event)
+        const events = await groupData.addEvent(user.id, groupId, event)
+        if(!events){
+            throw errors.EVENT_NOT_FOUND(eventId)
+        }
+        return events
     }
 
     async function removeEvent(userToken, eventId, groupId){
@@ -107,11 +117,11 @@ export default function(groupData, userData, eventData){
         if(!group){
             throw errors.GROUP_NOT_FOUND()
         }
-        return await groupData.removeEvent(userToken, groupId, eventId)
-    }
-
-    function isValidString(value){
-        return typeof value === "string" && value !== ""
+        const events = await groupData.removeEvent(userToken, groupId, eventId)
+        if(!events){
+            throw errors.EVENT_NOT_FOUND(eventId)
+        }
+        return events
     }
 }
 

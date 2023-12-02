@@ -380,9 +380,9 @@ components:
     NewUser:
       type: object
       required:
-        - userName
+        - username
       properties:
-        userName:
+        username:
           type: string
           example: testUsername
     Event:
@@ -448,7 +448,7 @@ components:
         uri:
           type: string
           format: uri
-          example: "Done with Sucess"
+          example: "Done with Success"
         description:
           type: string
           example: "Done"

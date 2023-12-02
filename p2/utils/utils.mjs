@@ -13,3 +13,15 @@ function randomChar(pool){
     return Math.floor(Math.random() * pool)
 }
 
+export function isValidString(value){
+    return typeof value === "string" && value !== ""
+}
+
+export function isValidToken(auth_header){
+    const Bearer_str = "Bearer "
+    return (
+        auth_header &&
+        auth_header.startsWith(Bearer_str) &&
+        auth_header.length > Bearer_str.length
+    )
+}

@@ -6,6 +6,9 @@ export default function(userData){
         listUsers: listUsers,
     }
      async function createUser(username){
+        if(!username){
+            throw errors.INVALID_PARAMETER(username)
+        }
         const user = await userData.findUser(username)
         if(!user){
             return await userData.createUser(username)
