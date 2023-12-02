@@ -1,11 +1,14 @@
 import errors from "../web/errors.mjs";
 
-export default function(groupData, userData){
+export default function(groupData, userData, eventData){
     if(!groupData){
         throw errors.INVALID_PARAMETER("groupData")
     }
     if(!userData){
         throw errors.INVALID_PARAMETER("userData")
+    }
+    if(!eventData){
+        throw errors.INVALID_PARAMETER("eventData")
     }
 
     return {
@@ -14,6 +17,8 @@ export default function(groupData, userData){
         updateGroup: updateGroup,
         deleteGroup: deleteGroup,
         createGroup: createGroup,
+        addEvent: addEvent,
+        removeEvent: removeEvent,
     }
 
     async function createGroup(userToken, group){
@@ -81,6 +86,28 @@ export default function(groupData, userData){
             throw errors.USER_NOT_FOUND()
         }
         return await groupData.deleteGroup(user.id, groupID)
+    }
+
+    async function addEvent(userToken, eventId, groupId){
+        const user = await userData.getUser(userToken)
+        const group = await groupData.getGroup(user.id, groupId)
+        if(!group){
+            throw errors.GROUP_NOT_FOUND()
+        }
+        const event = await eventData.getEvent(eventId)
+        if(!event){
+            throw errors.EVENT_ALREADY_EXISTS()
+        }
+        return await groupData.addEvent(user.id, groupId, event)
+    }
+
+    async function removeEvent(userToken, eventId, groupId){
+        const user = await userData.getUser(userToken)
+        const group = await groupData.getGroup(user.id, groupId)
+        if(!group){
+            throw errors.GROUP_NOT_FOUND()
+        }
+        return await groupData.removeEvent(userToken, groupId, eventId)
     }
 
     function isValidString(value){

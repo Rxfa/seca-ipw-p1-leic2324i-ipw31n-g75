@@ -1,7 +1,7 @@
 const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 
 export function randomString(size){
-    var str = ""
+    let str = "";
     for(let i = 0; i < size; i++){
         str += ALPHABET.charAt(randomChar(ALPHABET.length - 1))
         
@@ -11,9 +11,5 @@ export function randomString(size){
 
 function randomChar(pool){
     return Math.floor(Math.random() * pool)
-}
-
-export function getCurrentUser(){
-
 }
 

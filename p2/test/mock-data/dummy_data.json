@@ -1,0 +1,214 @@
+{
+  "events": [
+    {
+      "id": "G5v0Z9Yc3YZz9",
+      "name": "Phoenix Suns vs. New Orleans Pelicans",
+      "date": "2024-04-07T22:00:00Z",
+      "segment": "Sports",
+      "genre": "Basketball"
+    },
+    {
+      "id": "G5dIZ9YmSXKWz",
+      "name": "San Antonio Spurs vs. Phoenix Suns",
+      "date": "2024-03-26T00:00:00Z",
+      "segment": "Sports",
+      "genre": "Basketball"
+    },
+    {
+      "id": "Z7r9jZ1AdJ9AK",
+      "name": "Minnesota Timberwolves vs. Phoenix Suns",
+      "date": "2024-04-14T19:30:00Z",
+      "segment": "Sports",
+      "genre": "Basketball"
+    },
+    {
+      "id": "G5v0Z9Yc3cOzG",
+      "name": "Phoenix Suns vs. Atlanta Hawks",
+      "date": "2024-03-22T02:30:00Z",
+      "segment": "Sports",
+      "genre": "Basketball"
+    },
+    {
+      "id": "G5v0Z9Yc3R8zK",
+      "name": "Phoenix Suns vs. Minnesota Timberwolves",
+      "date": "2024-04-06T02:00:00Z",
+      "segment": "Sports",
+      "genre": "Basketball"
+    },
+    {
+      "id": "Z7r9jZ1AdJ91k",
+      "name": "LA Clippers vs. Golden State Warriors",
+      "date": "2023-12-02T21:00:00Z",
+      "segment": "Sports",
+      "genre": "Basketball"
+    },
+    {
+      "id": "Z7r9jZ1AdJ9uI",
+      "name": "New Orleans Pelicans vs. Phoenix Suns",
+      "date": "2024-04-02T00:00:00Z",
+      "segment": "Sports",
+      "genre": "Basketball"
+    },
+    {
+      "id": "vvG1jZ9MdsQVHo",
+      "name": "Milwaukee Bucks vs Phoenix Suns (Premium Spaces)",
+      "date": "2024-03-17T17:00:00Z",
+      "segment": "Sports",
+      "genre": "Basketball"
+    },
+    {
+      "id": "G5vjZ9n9iCFsA",
+      "name": "U2:UV Achtung Baby Live At Sphere - General Admission Floor",
+      "date": "2023-12-03T04:00:00Z",
+      "segment": "Music",
+      "genre": "Rock"
+    },
+    {
+      "id": "vvG1FZ9tN2FITe",
+      "name": "Philadelphia Eagles vs. San Francisco 49ers",
+      "date": "2023-12-03T21:25:00Z",
+      "segment": "Sports",
+      "genre": "Football"
+    },
+    {
+      "id": "G5vjZ9n9i8Is5",
+      "name": "U2:UV Achtung Baby Live At Sphere - General Admission Floor",
+      "date": "2023-12-07T04:00:00Z",
+      "segment": "Music",
+      "genre": "Rock"
+    },
+    {
+      "id": "G5vjZ9n9ijIsN",
+      "name": "U2:UV Achtung Baby Live At Sphere - General Admission Floor",
+      "date": "2023-12-17T04:00:00Z",
+      "segment": "Music",
+      "genre": "Rock"
+    },
+    {
+      "id": "G5vjZ9n9ibFs_",
+      "name": "U2:UV Achtung Baby Live At Sphere - General Admission Floor",
+      "date": "2023-12-14T04:00:00Z",
+      "segment": "Music",
+      "genre": "Rock"
+    },
+    {
+      "id": "G5vjZ9n9ipFs4",
+      "name": "U2:UV Achtung Baby Live At Sphere - General Admission Floor",
+      "date": "2023-12-10T04:00:00Z",
+      "segment": "Music",
+      "genre": "Rock"
+    },
+    {
+      "id": "vvG1jZ9t3-xv0B",
+      "name": "Green Bay Packers vs. Kansas City Chiefs",
+      "date": "2023-12-04T01:20:00Z",
+      "segment": "Sports",
+      "genre": "Football"
+    },
+    {
+      "id": "vvG1YZ9tld6SpP",
+      "name": "Dallas Cowboys vs. Philadelphia Eagles",
+      "date": "2023-12-11T01:20:00Z",
+      "segment": "Sports",
+      "genre": "Football"
+    },
+    {
+      "id": "G5vYZ9IUEdKYS",
+      "name": "San Francisco 49ers vs. Seattle Seahawks",
+      "date": "2023-12-10T21:05:00Z",
+      "segment": "Sports",
+      "genre": "Football"
+    },
+    {
+      "id": "G5vjZ9n9ifFs2",
+      "name": "U2:UV Achtung Baby Live At Sphere - General Admission Floor",
+      "date": "2023-12-09T04:00:00Z",
+      "segment": "Music",
+      "genre": "Rock"
+    },
+    {
+      "id": "G5vjZ9tCSsdet",
+      "name": "Las Vegas Raiders vs. Minnesota Vikings",
+      "date": "2023-12-10T21:05:00Z",
+      "segment": "Sports",
+      "genre": "Football"
+    },
+    {
+      "id": "G5vYZ9IUJHSRW",
+      "name": "San Francisco 49ers vs. Baltimore Ravens",
+      "date": "2023-12-26T01:15:00Z",
+      "segment": "Sports",
+      "genre": "Football"
+    },
+    {
+      "id": "vvG1bZ9IBsBSoR",
+      "name": "Kansas City Chiefs vs. Buffalo Bills",
+      "date": "2023-12-10T21:25:00Z",
+      "segment": "Sports",
+      "genre": "Football"
+    },
+    {
+      "id": "vvG1bZ9IBsHS3a",
+      "name": "Kansas City Chiefs vs. Cincinnati Bengals",
+      "date": "2023-12-31T21:25:00Z",
+      "segment": "Sports",
+      "genre": "Football"
+    },
+    {
+      "id": "k7vGF9t34xvlo",
+      "name": "Buffalo Bills vs. Dallas Cowboys",
+      "date": "2023-12-17T21:25:00Z",
+      "segment": "Sports",
+      "genre": "Football"
+    },
+    {
+      "id": "vvG1bZ9IBwZdKv",
+      "name": "Kansas City Chiefs vs. Las Vegas Raiders",
+      "date": "2023-12-25T18:00:00Z",
+      "segment": "Sports",
+      "genre": "Football"
+    },
+    {
+      "id": "vvG1FZ9tN26FXU",
+      "name": "Philadelphia Eagles vs. New York Giants",
+      "date": "2023-12-25T21:30:00Z",
+      "segment": "Sports",
+      "genre": "Football"
+    },
+    {
+      "id": "G5dIZ9twBEfLh",
+      "name": "Houston Texans vs. Denver Broncos",
+      "date": "2023-12-03T18:00:00Z",
+      "segment": "Sports",
+      "genre": "Football"
+    },
+    {
+      "id": "vvG1bZ90rPxSms",
+      "name": "Minnesota Vikings vs. Green Bay Packers",
+      "date": "2024-01-01T01:20:00Z",
+      "segment": "Sports",
+      "genre": "Football"
+    },
+    {
+      "id": "vvG1HZ9txxMJ2B",
+      "name": "Seattle Seahawks vs. Philadelphia Eagles",
+      "date": "2023-12-19T01:15:00Z",
+      "segment": "Sports",
+      "genre": "Football"
+    },
+    {
+      "id": "Z7r9jZ1AdJ9ua",
+      "name": "New Orleans Pelicans vs. Los Angeles Lakers",
+      "date": "2024-01-01T00:00:00Z",
+      "segment": "Sports",
+      "genre": "Basketball"
+    },
+    {
+      "id": "vvG1VZ9tp9uW8x",
+      "name": "Miami Dolphins vs. Dallas Cowboys",
+      "date": "2023-12-24T21:25:00Z",
+      "segment": "Sports",
+      "genre": "Football"
+    }
+  ]
+}

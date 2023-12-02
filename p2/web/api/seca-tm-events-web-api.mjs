@@ -1,7 +1,7 @@
 export default function(services){
     return {
-        popularEvents: getPopularEvents,
-        eventByName: getEventByName
+        getPopularEvents: getPopularEvents,
+        getEventByName: getEventByName
     }
 
     async function getPopularEvents(req, res){

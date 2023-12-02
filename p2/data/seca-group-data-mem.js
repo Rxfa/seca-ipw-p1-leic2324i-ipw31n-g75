@@ -3,13 +3,15 @@ export const GROUPS = [
         id: 1,
         owner: 1,
         name: "test1",
-        description: "test1 description"
+        description: "test1 description",
+        events: []
     },    
     {
         id: 2,
         owner: 2,
         name: "test2",
-        description: "test2 description"
+        description: "test2 description",
+        events: []
     },
 ]
 
@@ -50,12 +52,29 @@ export async function createGroup(ownerID, group){
         owner: ownerID,
         name: group.name,
         description: group.description,
+        events: []
     }
     GROUPS.push(newGroup)
     return newGroup
 }
 
+export async function addEvent(ownerId, groupId, event){
+    findGroupAndDoSomething(ownerId, groupId, group => {
+        group.events.push(event)
+        return event
+    })
+}
+
+export async function removeEvent(ownerId, groupId, eventId){
+    findGroupAndDoSomething(ownerId, groupId, group => {
+        const eventIdx = group.events.findIndex(e => e.id === eventId)
+        group.events.splice(eventIdx, 1)
+        return group
+    })
+}
+
 function findGroupAndDoSomething(ownerID, groupID, action){
+    console.log(groupID)
     const groupIdx =
         GROUPS.findIndex(group => group.id  == groupID && group.owner == ownerID)
     const group = GROUPS[groupIdx]

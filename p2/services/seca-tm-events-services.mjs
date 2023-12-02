@@ -7,7 +7,7 @@ export default function(groupsData, eventsData){
 
     return {
         getPopularEvents: getPopularEvents,
-        getEventsByName: getEventByName
+        getEventByName: getEventByName
     }
 
     async function getPopularEvents(limit, page){
@@ -19,6 +19,6 @@ export default function(groupsData, eventsData){
     async function getEventByName(name, limit, page){
         limit = limit === undefined ? 30 : parseInt(limit, 10)
         page = page === undefined ? 1 : parseInt(page, 10)
-        return await eventsData.getEventsByName(name, limit, page)
+        return await eventsData.getEventByName(name, limit, page)
     }
 }

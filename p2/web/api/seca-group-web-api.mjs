@@ -12,6 +12,8 @@ export default function (services){
         createGroup: wrapper(createGroup),
         updateGroup: wrapper(updateGroup),
         deleteGroup: wrapper(deleteGroup),
+        addEvent: wrapper(addEvent),
+        removeEvent: wrapper(removeEvent),
     }
 
     async function listGroups(req, res){
@@ -24,7 +26,7 @@ export default function (services){
     }
 
     async function createGroup(req, res){
-        let newGroup = await services.createGroup(req.token, req.body)
+        const newGroup = await services.createGroup(req.token, req.body)
         res.status(201).json({
             status: `group with id ${newGroup.id} create with success`,
             group: newGroup
@@ -46,11 +48,29 @@ export default function (services){
             req.token,
             id
         )
-        if (group){
-            res.status(200).json(`Task with id ${id} deleted successfully`)
-            return
+        if (!group){
+            throw errors.GROUP_NOT_FOUND()
         }
-        throw errors.GROUP_NOT_FOUND()
+            res.status(200).json(`Task with id ${id} deleted successfully`)
+    }
+
+    async function addEvent(req, res){
+        const groupId = req.params.id
+        console.log(req.body.id)
+        const event = await services.addEvent(req.token, req.body.id, groupId)
+        if(!event){
+            throw errors.EVENT_NOT_FOUND()
+        }
+        res.status(200).json(`Event added to group ${groupId} successfully`)
+    }
+
+    async function removeEvent(req, res){
+        const groupId = req.params.groupId
+        const event = await services.removeEvent(req.token, req.body.id, groupId)
+        if(!event){
+            throw errors.EVENT_NOT_FOUND()
+        }
+        res.status(200).json(`Event deleted from group ${groupId} successfully`)
     }
 
     function wrapper(_func) {

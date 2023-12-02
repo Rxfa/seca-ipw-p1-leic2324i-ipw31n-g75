@@ -1,0 +1,509 @@
+openapi: 3.0.1
+info:
+  title: SECA API
+  description: This is a simple API for managing Groups and Users
+  version: 1.0.0
+servers:
+  - description: Localhost server for testing API
+    url: http://localhost:1904
+tags:
+  - name: Users
+  - name: Groups
+  - name: Events
+paths:
+  /users:
+    description: The resource that contains all users
+    post:
+      tags:
+        - Users
+      summary: Create user
+      description: Adds a new user to the system
+      operationId: insertUser
+      requestBody:
+        description: User to add
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewUser"
+        required: true
+      responses:
+        201:
+          description: User created
+          content:
+            application/json:
+              schema:
+                required:
+                - token
+                type: object
+                properties:
+                  token:
+                    type: string
+                    format: uuid
+        400:
+          description: Invalid input
+          content: {}
+  /groups:
+    description: Resource that contains all Groups
+    get:
+      tags:
+        - Groups
+      summary: Returns all groups owned by user
+      description: By passing the user ID, you can search for available
+        Groups
+      operationId: listGroups
+      responses:
+        200:
+          description: Gets all groups owned by user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schema/Groups"
+        401:
+          $ref: "#/components/responses/401Unauthorized"
+        404:
+          $ref: "#/components/responses/400BadRequest"
+    post:
+      tags:
+        - Groups
+      summary: Create Group
+      description: Adds a group to the system
+      operationId: insertGroup
+      requestBody:
+        description: Group to add
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewGroup"
+        required: false
+      responses:
+        201:
+          description: Group created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Group"
+        400:
+          $ref: "#/components/responses/400BadRequest"
+        401:
+          $ref: "#/components/responses/401Unauthorized"
+        404:
+          $ref: "#/components/responses/404NotFound"
+
+  /groups/:GroupId:
+    description: The resource that represents one Group
+    get:
+      tags:
+        - Groups
+      summary: Get a group given its id
+      operationId: getGroup
+      parameters:
+        - name: groupID
+          in: path
+          required: true
+          schema:
+            type: integer
+            minimum: 0
+      responses:
+        200:
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Group"
+        400:
+          $ref: "#/components/responses/400BadRequest"
+        404:
+          $ref: "#/components/responses/404NotFound"
+        409:
+          $ref: "#/components/responses/409AlreadyExists" # ??
+        500:
+          $ref: "#/components/responses/500ServerError"
+        502:
+          $ref: "#/components/responses/502GatewayProblem"
+
+    post:
+      tags:
+        - Groups
+      summary: Inserts the event into the group for that IP
+      description: Adds a event to that group
+      operationId: addEventToGroupByID
+      parameters:
+        - name: groupId
+          in: path
+          description: ID of the group to be updated
+          required: true
+          schema:
+            type: integer
+            ##isto ainda não sei pq vai depender do body do IP
+        - name: title
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uuid
+        - name: description
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uuid
+      requestBody:
+        description: Group to add
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewGroup"
+        required: false
+      responses:
+        200:
+          $ref: "#/components/responses/200Sucess"
+        400:
+          $ref: "#/components/responses/400BadRequest"
+        404:
+          $ref: "#/components/responses/404NotFound"
+        409:
+          $ref: "#/components/responses/409AlreadyExists"
+        500:
+          $ref: "#/components/responses/500ServerError"
+        502:
+          $ref: "#/components/responses/502GatewayProblem"
+    put:
+      tags:
+        - Groups
+      summary: updates a group
+      description: Updates a group in the system
+      operationId: updateGroup
+      parameters:
+        - name: groupId
+          in: path
+          description: ID of the group to be updated
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        description: Update a Group
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/NewGroup"
+        required: false
+      responses:
+        200:
+          $ref: "#/components/responses/200Sucess"
+        400:
+          $ref: "#/components/responses/400BadRequest"
+        404:
+          $ref: "#/components/responses/404NotFound"
+        409:
+          $ref: "#/components/responses/409AlreadyExists"
+        500:
+          $ref: "#/components/responses/500ServerError"
+        502:
+          $ref: "#/components/responses/502GatewayProblem"
+
+    delete:
+      tags:
+        - Groups
+      summary: Delete a group by ID
+      description: Delete a group by ID
+      operationId: deleteGroup
+      parameters:
+        - name: groupId
+          in: path
+          description: ID of the group to be deleted
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          $ref: "#/components/responses/200Sucess"
+        400:
+          $ref: "#/components/responses/400BadRequest"
+        404:
+          $ref: "#/components/responses/404NotFound"
+        409:
+          $ref: "#/components/responses/409AlreadyExists" # ??
+        500:
+          $ref: "#/components/responses/500ServerError"
+        502:
+          $ref: "#/components/responses/502GatewayProblem"
+  /groups/:GroupId/:eventId:
+    put:
+      tags:
+        - Events
+      summary: Add an event
+      description: Add an event in the system
+      operationId: AddEvent
+      parameters:
+        - name: groupId
+          in: path
+          description: ID of the Event to be updated
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          $ref: "#/components/responses/200Sucess"
+        400:
+          $ref: "#/components/responses/400BadRequest"
+        404:
+          $ref: "#/components/responses/404NotFound"
+        409:
+          $ref: "#/components/responses/409AlreadyExists"
+        500:
+          $ref: "#/components/responses/500ServerError"
+        502:
+          $ref: "#/components/responses/502GatewayProblem"
+    delete:
+      tags:
+        - Events
+      summary: Delete an event by ID
+      description: Delete an event by ID
+      operationId: deleteGroup
+      parameters:
+        - name: EventId
+          in: path
+          description: ID of the Event to be deleted
+          required: true
+          schema:
+            type: integer
+      responses:
+        200:
+          $ref: "#/components/responses/200Sucess"
+        400:
+          $ref: "#/components/responses/400BadRequest"
+        404:
+          $ref: "#/components/responses/404NotFound"
+        409:
+          $ref: "#/components/responses/409AlreadyExists" # ??
+        500:
+          $ref: "#/components/responses/500ServerError"
+        502:
+          $ref: "#/components/responses/502GatewayProblem"
+  /events:
+    description: the resource that get all Events
+    get:
+      tags:
+        - Events
+      summary: Get all events
+      operationId: getAllEvents
+      parameters:
+        - name: idk??
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uuid
+
+      responses:
+        200:
+          $ref: "#/components/responses/200Sucess"
+        400:
+          $ref: "#/components/responses/400BadRequest"
+        404:
+          $ref: "#/components/responses/404NotFound"
+        409:
+          $ref: "#/components/responses/409AlreadyExists"
+        500:
+          $ref: "#/components/responses/500ServerError"
+        502:
+          $ref: "#/components/responses/502GatewayProblem"
+
+  /events/popular:
+    description: the resource that get all Popular Events
+    get:
+      tags:
+        - Events
+      summary: Get all Popular events
+      operationId: getAllEvents
+      parameters:
+        - name: idk??
+          in: header
+          required: true
+          schema:
+            type: string
+            format: uuid
+
+      responses:
+        200:
+          $ref: "#/components/responses/200Sucess"
+        400:
+          $ref: "#/components/responses/400BadRequest"
+        404:
+          $ref: "#/components/responses/404NotFound"
+        409:
+          $ref: "#/components/responses/409AlreadyExists"
+        500:
+          $ref: "#/components/responses/500ServerError"
+        502:
+          $ref: "#/components/responses/502GatewayProblem"
+
+components:
+  securitySchemes:
+    bearerAuth: # arbitrary name for the security scheme
+      type: http
+      scheme: bearer
+  schemas:
+    NewGroup:
+      required:
+        - title
+        - description
+      type: object
+      properties:
+        title:
+          type: string
+          example: testing
+        description:
+          type: string
+          example: To test how to create a group
+    Group:
+      allOf:
+        - $ref: "#/components/schemas/NewGroup"
+        - type: object
+          required:
+            - id
+            - userId
+          properties:
+            id:
+              type: integer
+              example: 1
+            userId:
+              type: integer
+              example: 1
+    NewUser:
+      type: object
+      required:
+        - userName
+      properties:
+        userName:
+          type: string
+          example: testUsername
+    NewGroupCreatedOrUpdated:
+      required:
+        - status
+        - group
+      type: object
+      properties:
+        status:
+          type: string
+          example: Group with id 123 created with success
+        group:
+          $ref: "#/components/schemas/Group"
+    #rever isto
+    Events:
+      type: object
+      required:
+        - userName
+      properties:
+        userName:
+          type: string
+          example: antonio.silva
+    NewEventUpdated:
+      required:
+        - status
+        - group
+      type: object
+      properties:
+        status:
+          type: string
+          example: Group with id 123 created with success
+        group:
+          $ref: "#/components/schemas/Group"
+    #rever isto
+    AlreadyExists:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Already exists in the system"
+
+    MissingParameter:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Missing required parameter"
+
+    InvalidBody:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Invalid body content"
+    NotFound:
+      type: object
+      properties:
+        uri:
+          type: string
+          format: uri
+          example: "/groups/1"
+        description:
+          type: string
+          example: "Group with id 1 not found"
+    ServerError:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Error related to the server "
+    Gateway:
+      type: object
+      properties:
+        error:
+          type: string
+          example: "Wrong gateway, please check your PORT"
+    Sucess:
+      type: object
+      properties:
+        uri:
+          type: string
+          format: uri
+          example: "Done with Sucess"
+        description:
+          type: string
+          example: "Done"
+  responses:
+    200Sucess:
+      description: "Sucess"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Sucess"
+    404NotFound:
+      description: "Resource not found"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/NotFound"
+
+    400BadRequest:
+      description: "Invalid Request because of a missing Parameter or invalid body content"
+      content:
+        application/json:
+          schema:
+            oneOf:
+              - $ref: "#/components/schemas/MissingParameter"
+              - $ref: "#/components/schemas/InvalidBody"
+
+    409AlreadyExists:
+      description: "Invalid Request because there is one already in the system"
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/AlreadyExists"
+
+    500ServerError:
+      description: Server Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/ServerError"
+
+    502GatewayProblem:
+      description: Server Error
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Gateway"
