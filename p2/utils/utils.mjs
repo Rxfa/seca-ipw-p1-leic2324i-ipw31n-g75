@@ -13,11 +13,6 @@ function randomChar(pool){
     return Math.floor(Math.random() * pool)
 }
 
-export function isAuthenticated(){
-    // TODO
-    return true
-}
-
 export function getCurrentUser(){
 
 }
