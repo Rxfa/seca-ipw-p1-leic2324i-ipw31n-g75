@@ -5,7 +5,7 @@ info:
   version: 1.0.0
 servers:
   - description: Localhost server for testing API
-    url: http://localhost:1904
+    url: http://localhost:3000
 tags:
   - name: Users
   - name: Groups
@@ -51,6 +51,8 @@ paths:
       description: By passing the user ID, you can search for available
         Groups
       operationId: listGroups
+      security:
+        - bearerAuth: [ ]
       responses:
         200:
           description: Gets all groups owned by user
@@ -59,7 +61,7 @@ paths:
               schema:
                 type: array
                 items:
-                  $ref: "#/components/schema/Groups"
+                  $ref: "#/components/schemas/Group"
         401:
           $ref: "#/components/responses/401Unauthorized"
         404:
@@ -70,6 +72,8 @@ paths:
       summary: Create Group
       description: Adds a group to the system
       operationId: insertGroup
+      security:
+        - bearerAuth: [ ]
       requestBody:
         description: Group to add
         content:
@@ -98,9 +102,12 @@ paths:
         - Groups
       summary: Get a group given its id
       operationId: getGroup
+      security:
+        - bearerAuth: []
       parameters:
         - name: groupID
           in: path
+          description: ID of the group to be fetched
           required: true
           schema:
             type: integer
@@ -114,76 +121,71 @@ paths:
                 $ref: "#/components/schemas/Group"
         400:
           $ref: "#/components/responses/400BadRequest"
+        401:
+          $ref: "#/components/responses/401Unauthorized"
         404:
           $ref: "#/components/responses/404NotFound"
-        409:
-          $ref: "#/components/responses/409AlreadyExists" # ??
-        500:
-          $ref: "#/components/responses/500ServerError"
-        502:
-          $ref: "#/components/responses/502GatewayProblem"
-
     post:
       tags:
         - Groups
-      summary: Inserts the event into the group for that IP
-      description: Adds a event to that group
-      operationId: addEventToGroupByID
+      summary: Adds event
+      description: Adds a event to a group
+      operationId: addEvent
+      security:
+        - bearerAuth: [ ]
       parameters:
-        - name: groupId
+        - name: groupID
           in: path
-          description: ID of the group to be updated
+          description: ID of the group to add event to
           required: true
           schema:
             type: integer
-            ##isto ainda não sei pq vai depender do body do IP
-        - name: title
-          in: header
-          required: true
-          schema:
-            type: string
-            format: uuid
-        - name: description
-          in: header
-          required: true
-          schema:
-            type: string
-            format: uuid
+            minimum: 0
       requestBody:
-        description: Group to add
+        description: Event to add
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/NewGroup"
-        required: false
+              required:
+              - id
+              type: object
+              properties:
+                id:
+                  type: string
+        required: true
       responses:
         200:
-          $ref: "#/components/responses/200Sucess"
+          description: event added
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Group"
         400:
           $ref: "#/components/responses/400BadRequest"
+        401:
+          $ref: "#/components/responses/401Unauthorized"
         404:
           $ref: "#/components/responses/404NotFound"
-        409:
-          $ref: "#/components/responses/409AlreadyExists"
-        500:
-          $ref: "#/components/responses/500ServerError"
-        502:
-          $ref: "#/components/responses/502GatewayProblem"
     put:
       tags:
         - Groups
-      summary: updates a group
+      summary: Updates a group
       description: Updates a group in the system
       operationId: updateGroup
+      security:
+        - bearerAuth: [ ]
       parameters:
-        - name: groupId
+        - name: groupID
           in: path
           description: ID of the group to be updated
           required: true
           schema:
             type: integer
+            minimum: 0
       requestBody:
-        description: Update a Group
+        description: Group to update
         content:
           application/json:
             schema:
@@ -191,78 +193,62 @@ paths:
         required: false
       responses:
         200:
-          $ref: "#/components/responses/200Sucess"
+          description: Group updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Group"
         400:
           $ref: "#/components/responses/400BadRequest"
+        401:
+          $ref: "#/components/responses/401Unauthorized"
         404:
           $ref: "#/components/responses/404NotFound"
-        409:
-          $ref: "#/components/responses/409AlreadyExists"
-        500:
-          $ref: "#/components/responses/500ServerError"
-        502:
-          $ref: "#/components/responses/502GatewayProblem"
-
     delete:
       tags:
         - Groups
       summary: Delete a group by ID
       description: Delete a group by ID
       operationId: deleteGroup
+      security:
+        - bearerAuth: [ ]
       parameters:
-        - name: groupId
+        - name: groupID
           in: path
-          description: ID of the group to be deleted
+          description: ID of the group to be fetched
           required: true
           schema:
             type: integer
+            minimum: 0
       responses:
         200:
-          $ref: "#/components/responses/200Sucess"
-        400:
-          $ref: "#/components/responses/400BadRequest"
+          description: get groups owned by user
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Group"
+        401:
+          $ref: "#/components/responses/401Unauthorized"
         404:
           $ref: "#/components/responses/404NotFound"
-        409:
-          $ref: "#/components/responses/409AlreadyExists" # ??
-        500:
-          $ref: "#/components/responses/500ServerError"
-        502:
-          $ref: "#/components/responses/502GatewayProblem"
   /groups/:GroupId/:eventId:
-    put:
-      tags:
-        - Events
-      summary: Add an event
-      description: Add an event in the system
-      operationId: AddEvent
-      parameters:
-        - name: groupId
-          in: path
-          description: ID of the Event to be updated
-          required: true
-          schema:
-            type: integer
-      responses:
-        200:
-          $ref: "#/components/responses/200Sucess"
-        400:
-          $ref: "#/components/responses/400BadRequest"
-        404:
-          $ref: "#/components/responses/404NotFound"
-        409:
-          $ref: "#/components/responses/409AlreadyExists"
-        500:
-          $ref: "#/components/responses/500ServerError"
-        502:
-          $ref: "#/components/responses/502GatewayProblem"
     delete:
       tags:
-        - Events
+        - Groups
       summary: Delete an event by ID
       description: Delete an event by ID
-      operationId: deleteGroup
+      operationId: removeEvent
+      security:
+        - bearerAuth: [ ]
       parameters:
+        - name: GroupId
+          in: path
+          description: ID of the group of the event to be deleted
+          required: true
+          schema:
+            type: integer
         - name: EventId
           in: path
           description: ID of the Event to be deleted
@@ -271,84 +257,97 @@ paths:
             type: integer
       responses:
         200:
-          $ref: "#/components/responses/200Sucess"
+          description: event deleted
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Group"
         400:
           $ref: "#/components/responses/400BadRequest"
+        401:
+          $ref: "#/components/responses/401Unauthorized"
         404:
           $ref: "#/components/responses/404NotFound"
-        409:
-          $ref: "#/components/responses/409AlreadyExists" # ??
-        500:
-          $ref: "#/components/responses/500ServerError"
-        502:
-          $ref: "#/components/responses/502GatewayProblem"
   /events:
     description: the resource that get all Events
     get:
       tags:
         - Events
       summary: Get all events
-      operationId: getAllEvents
+      operationId: getPopularEvents
       parameters:
-        - name: idk??
-          in: header
-          required: true
+        - name: page
+          in: query
+          description: the page number
           schema:
-            type: string
-            format: uuid
-
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          description: max number of events
+          schema:
+            type: integer
+            minimum: 1
+            default: 30
       responses:
         200:
-          $ref: "#/components/responses/200Sucess"
-        400:
-          $ref: "#/components/responses/400BadRequest"
-        404:
-          $ref: "#/components/responses/404NotFound"
-        409:
-          $ref: "#/components/responses/409AlreadyExists"
-        500:
-          $ref: "#/components/responses/500ServerError"
-        502:
-          $ref: "#/components/responses/502GatewayProblem"
+          description: gets popular events, within the specified criteria and pagination
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Event"
 
-  /events/popular:
-    description: the resource that get all Popular Events
+  /events/:name:
     get:
       tags:
         - Events
-      summary: Get all Popular events
-      operationId: getAllEvents
+      summary: Get event by name
+      operationId: getEventByName
       parameters:
-        - name: idk??
-          in: header
+        - name: name
+          in: path
           required: true
+          description: name of the event to search for
           schema:
             type: string
-            format: uuid
-
+        - name: page
+          in: query
+          description: the page number
+          schema:
+            type: integer
+            minimum: 1
+            default: 1
+        - name: limit
+          in: query
+          description: max number of events
+          schema:
+            type: integer
+            minimum: 1
+            default: 30
       responses:
         200:
-          $ref: "#/components/responses/200Sucess"
-        400:
-          $ref: "#/components/responses/400BadRequest"
-        404:
-          $ref: "#/components/responses/404NotFound"
-        409:
-          $ref: "#/components/responses/409AlreadyExists"
-        500:
-          $ref: "#/components/responses/500ServerError"
-        502:
-          $ref: "#/components/responses/502GatewayProblem"
+          description: gets events whose names match the given name, within the specified criteria and pagination
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Event"
 
 components:
   securitySchemes:
-    bearerAuth: # arbitrary name for the security scheme
+    bearerAuth:
       type: http
       scheme: bearer
   schemas:
     NewGroup:
       required:
-        - title
+        - name
         - description
       type: object
       properties:
@@ -364,14 +363,20 @@ components:
         - type: object
           required:
             - id
-            - userId
+            - ownerId
           properties:
             id:
               type: integer
+              minimum: 0
               example: 1
-            userId:
+            ownerId:
               type: integer
+              minimum: 0
               example: 1
+            events:
+              type: array
+              items:
+                $ref: "#/components/schemas/Event"
     NewUser:
       type: object
       required:
@@ -380,38 +385,21 @@ components:
         userName:
           type: string
           example: testUsername
-    NewGroupCreatedOrUpdated:
-      required:
-        - status
-        - group
-      type: object
-      properties:
-        status:
-          type: string
-          example: Group with id 123 created with success
-        group:
-          $ref: "#/components/schemas/Group"
-    #rever isto
-    Events:
+    Event:
       type: object
       required:
-        - userName
+        - id
+        - name
+        - date
       properties:
-        userName:
+        id:
           type: string
-          example: antonio.silva
-    NewEventUpdated:
-      required:
-        - status
-        - group
-      type: object
-      properties:
-        status:
+        name:
           type: string
-          example: Group with id 123 created with success
-        group:
-          $ref: "#/components/schemas/Group"
-    #rever isto
+        date:
+          type: object
+          example: 2024-04-07T22:00:00Z
+
     AlreadyExists:
       type: object
       properties:
@@ -454,7 +442,7 @@ components:
         error:
           type: string
           example: "Wrong gateway, please check your PORT"
-    Sucess:
+    Success:
       type: object
       properties:
         uri:
@@ -464,13 +452,18 @@ components:
         description:
           type: string
           example: "Done"
+    Unauthorized:
+      type: object
+      properties:
+        description:
+          type: string
   responses:
-    200Sucess:
-      description: "Sucess"
+    401Unauthorized:
+      description: Missing or invalid authentication token
       content:
         application/json:
           schema:
-            $ref: "#/components/schemas/Sucess"
+            $ref: "#/components/schemas/Unauthorized"
     404NotFound:
       description: "Resource not found"
       content:
