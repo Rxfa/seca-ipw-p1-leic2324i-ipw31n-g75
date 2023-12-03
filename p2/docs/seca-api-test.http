@@ -1,0 +1,113 @@
+
+
+###
+POST http://localhost:3000/users
+Content-Type: application/json
+
+{
+  "username": "test"
+}
+
+<> 2023-12-03T234603.400.json
+<> 2023-12-03T234236.400.json
+<> 2023-12-03T234213.201.json
+<> 2023-12-03T234136.201.json
+<> 2023-12-03T233642.201.json
+
+###
+GET http://localhost:3000/groups
+Authorization: Bearer {{Token}}
+
+<> 2023-12-03T234603.200.json
+<> 2023-12-03T234236.401.json
+<> 2023-12-03T234213.401.json
+<> 2023-12-03T234136.401.json
+<> 2023-12-03T233642.401.json
+
+###
+POST http://localhost:3000/groups
+Content-Type: application/json
+Authorization: Bearer {{Token}}
+
+{
+  "description": "desc",
+  "name": "name"
+}
+
+<> 2023-12-03T234603-1.200.json
+<> 2023-12-03T234236-1.401.json
+<> 2023-12-03T234213-1.401.json
+<> 2023-12-03T234136-1.401.json
+<> 2023-12-03T233642-1.401.json
+
+###
+GET http://localhost:3000/groups/1
+Authorization: Bearer {{Token}}
+
+<> 2023-12-03T234603.404.json
+<> 2023-12-03T234236-2.401.json
+<> 2023-12-03T234213-2.401.json
+<> 2023-12-03T234136-2.401.json
+<> 2023-12-03T233642-2.401.json
+
+###
+POST http://localhost:3000/groups/1
+Content-Type: application/json
+Authorization: Bearer {{Token}}
+
+{
+  "id": ""
+}
+
+<> 2023-12-03T234603-1.404.json
+<> 2023-12-03T234236-3.401.json
+<> 2023-12-03T234213-3.401.json
+<> 2023-12-03T234136-3.401.json
+<> 2023-12-03T233642-3.401.json
+
+###
+PUT http://localhost:3000/groups/1
+Content-Type: application/json
+Authorization: Bearer {{Token}}
+
+{}
+
+<> 2023-12-03T234603-2.404.json
+<> 2023-12-03T234236-4.401.json
+<> 2023-12-03T234213-4.401.json
+<> 2023-12-03T234136-4.401.json
+<> 2023-12-03T233642-4.401.json
+
+###
+DELETE http://localhost:3000/groups/1
+Authorization: Bearer {{Token}}
+
+<> 2023-12-03T234603-3.404.json
+<> 2023-12-03T234236-5.401.json
+<> 2023-12-03T234214.401.json
+<> 2023-12-03T234136-5.401.json
+<> 2023-12-03T233642-5.401.json
+
+###
+DELETE http://localhost:3000/groups/1/G5v0Z9Yc3YZz9
+Authorization: Bearer {{Token}}
+
+<> 2023-12-03T234603-4.404.json
+<> 2023-12-03T234236-6.401.json
+<> 2023-12-03T234214-1.401.json
+<> 2023-12-03T234137.401.json
+<> 2023-12-03T233642-6.401.json
+
+###
+GET http://localhost:3000/events
+
+<> 2023-12-03T234603-2.200.json
+<> 2023-12-03T234237.200.json
+<> 2023-12-03T234215.200.json
+
+###
+GET http://localhost:3000/events/Chicago
+
+<> 2023-12-03T234603-3.200.json
+<> 2023-12-03T234237-1.200.json
+<> 2023-12-03T234215-1.200.json

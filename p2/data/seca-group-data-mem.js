@@ -2,29 +2,15 @@ export const GROUPS = [
     {
         id: 1,
         owner: 1,
-        name: "test1",
-        description: "test1 description",
-        events: []
-    },    
-    {
-        id: 2,
-        owner: 2,
-        name: "test2",
-        description: "test2 description",
+        name: "name",
+        description: "description",
         events: []
     },
 ]
 
-let group_size = 2
-
-const MAX_LIMIT = 50
-export async function listGroups(ownerID, q, skip, limit){
-    const pred = q ? t => t.title.includes(q) : t => true
-    const retGroups = GROUPS
-        .filter(t => t.owner === ownerID)
-        .filter(pred)
-    const end = limit !== MAX_LIMIT ? (skip + limit): retGroups.length
-    return retGroups.slice(skip, end)
+let group_size = 1
+export async function listGroups(ownerID){
+    return GROUPS.filter(t => t.owner === ownerID)
 }
 
 export async function getGroup(ownerID, groupID){
@@ -59,8 +45,8 @@ export async function createGroup(ownerID, group){
 }
 
 export async function addEvent(ownerId, groupId, event){
-    findGroupAndDoSomething(ownerId, groupId, group => {
-        if(!group.events.find(e => e === event.id)){
+    return findGroupAndDoSomething(ownerId, groupId, group => {
+        if(group.events.find(e => e.id === event.id) === undefined){
             group.events.push(event)
             return event
         }
@@ -68,19 +54,19 @@ export async function addEvent(ownerId, groupId, event){
 }
 
 export async function removeEvent(ownerId, groupId, eventId){
-    findGroupAndDoSomething(ownerId, groupId, group => {
+    return findGroupAndDoSomething(ownerId, groupId, group => {
         const eventIdx = group.events.findIndex(e => e.id === eventId)
-        group.events.splice(eventIdx, 1)
-        return group
+        if(eventIdx !== -1){
+            group.events.splice(eventIdx, 1)
+            return group
+        }
     })
 }
 
 function findGroupAndDoSomething(ownerID, groupID, action){
-    console.log(groupID)
     const groupIdx =
-        GROUPS.findIndex(group => group.id  == groupID && group.owner == ownerID)
+        GROUPS.findIndex(group => group.id  === groupID && group.owner === ownerID)
     const group = GROUPS[groupIdx]
-    console.log(groupIdx)
     if(groupIdx !== -1){
         return action(group, groupIdx)
     }

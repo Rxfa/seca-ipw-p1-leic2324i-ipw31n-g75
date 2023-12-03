@@ -25,3 +25,10 @@ export function isValidToken(auth_header){
         auth_header.length > Bearer_str.length
     )
 }
+
+export function randomGroup() {
+    return {
+        name: randomString(6),
+        description: randomString(20)
+    }
+}

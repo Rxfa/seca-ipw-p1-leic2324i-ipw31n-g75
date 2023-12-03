@@ -3,17 +3,12 @@ import {randomUUID} from "crypto";
 export const USERS = [
     {
         id: 1,
-        username: "test1",
-        token: randomUUID()
+        name: `test`,
+        token: "ef604e80-a351-4d13-b78f-c888f3e63b6"
     },
-    {
-        id: 2,
-        username: "test2",
-        token: randomUUID()
-    }
 ]
 
-let user_size = 2
+let user_size = 1
 
 export async function getUser(token){
     return USERS.find(user => user.token === token)

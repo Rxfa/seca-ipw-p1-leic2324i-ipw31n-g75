@@ -34,7 +34,6 @@ app.use(bodyParser.urlencoded({ extended: false }))
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc))
 
 app.route("/users")
-    .get(userApi.listUsers)
     .post(userApi.insertUser)
 
 app.route("/groups")

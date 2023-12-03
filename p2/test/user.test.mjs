@@ -32,5 +32,4 @@ describe("create user", function(){
             expect(e.message).to.be.equal(`Invalid argument - undefined`)
         }
     })
-
 })

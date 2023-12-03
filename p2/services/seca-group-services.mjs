@@ -18,12 +18,12 @@ export default function(groupData, userData, eventData){
         removeEvent: removeEvent,
     }
 
-    async function listGroups(token, q, skip = 0, limit = 50){
+    async function listGroups(token){
         const user = await userData.getUser(token)
         if(!user){
             throw errors.USER_NOT_FOUND()
         }
-        return await groupData.listGroups(user.id, q, skip, limit)
+        return await groupData.listGroups(user.id)
     }
 
     async function createGroup(token, group){
@@ -63,7 +63,7 @@ export default function(groupData, userData, eventData){
             throw errors.USER_NOT_FOUND()
         const groups = await groupData.deleteGroup(user.id, groupID)
         if(!groups)
-            throw errors.GROUP_NOT_FOUND()
+            throw errors.GROUP_NOT_FOUND(groupID)
         return groups
     }
 
@@ -86,7 +86,7 @@ export default function(groupData, userData, eventData){
         const group = await groupData.getGroup(user.id, groupId)
         if(!group)
             throw errors.GROUP_NOT_FOUND(groupId)
-        const events = await groupData.removeEvent(userToken, groupId, eventId)
+        const events = await groupData.removeEvent(user.id, groupId, eventId)
         if(!events)
             throw errors.EVENT_NOT_FOUND(eventId)
         return events
