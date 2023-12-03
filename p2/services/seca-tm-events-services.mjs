@@ -1,10 +1,10 @@
 import errors from "../web/errors.mjs";
 
 export default function(groupsData, eventsData){
-    if(!groupsData || !eventsData){
-        throw errors.INVALID_PARAMETER("")
-    }
-
+    if(!groupsData)
+        throw errors.INVALID_PARAMETER("groupData")
+    if(!eventsData)
+        throw errors.INVALID_PARAMETER("eventData")
     return {
         getPopularEvents: getPopularEvents,
         getEventByName: getEventByName

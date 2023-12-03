@@ -60,8 +60,10 @@ export async function createGroup(ownerID, group){
 
 export async function addEvent(ownerId, groupId, event){
     findGroupAndDoSomething(ownerId, groupId, group => {
-        group.events.push(event)
-        return event
+        if(!group.events.find(e => e === event.id)){
+            group.events.push(event)
+            return event
+        }
     })
 }
 

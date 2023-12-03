@@ -8,16 +8,17 @@ export default function(services){
     }
 
     async function insertUser(req, res) {
+        try{
             const username = req.body.username
             const token = await services.createUser(username)
-            if(token !== undefined){
-                return res.status(201).json({"user-token": token})
-            }
-            return res.status(400).json("User already exists")
+            res.status(201).json({"user-token": token})
+        } catch (e){
+            res.status(400).json("User already exists")
+        }
 
     }
 
     async function listUsers(req, res) {
-        return res.status(200).json(await services.listUsers())
+        res.status(200).json(await services.listUsers())
     }
 }

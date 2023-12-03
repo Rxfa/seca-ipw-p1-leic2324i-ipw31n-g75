@@ -13,8 +13,8 @@ function randomChar(pool){
     return Math.floor(Math.random() * pool)
 }
 
-export function isValidString(value){
-    return typeof value === "string" && value !== ""
+export function isValidString(...values){
+    return values.every(v => typeof v === "string" && v !== "")
 }
 
 export function isValidToken(auth_header){

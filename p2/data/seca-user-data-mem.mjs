@@ -19,18 +19,18 @@ export async function getUser(token){
     return USERS.find(user => user.token === token)
 }
 
+export async function findUser(username){
+    return USERS.find(user => user.username === username)
+}
+
 export async function createUser(username){
-    let newUser = {
+    const newUser = {
         id: nextId(),
         username: username,
         token: randomUUID()
     }
     USERS.push(newUser)
     return newUser.token
-}
-
-export async function findUser(username){
-    return USERS.find(user => user.username === username)
 }
 
 export async function listUsers(){

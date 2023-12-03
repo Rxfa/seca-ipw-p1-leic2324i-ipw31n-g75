@@ -28,8 +28,8 @@ function transformEvents(data){
             id: event["id"],
             name: event["name"],
             date: event["dates"]["start"]["dateTime"],
-            segment: event["classifications"][0]["segment"]["name"],
-            genre: event["classifications"][0]["genre"]["name"]
+            segment: event["classifications"][0] !== undefined ? event["classifications"][0]["segment"]["name"] : undefined,
+            genre: event["classifications"][0] !== undefined ? event["classifications"][0]["genre"]["name"] : undefined
         }
     })
 }
