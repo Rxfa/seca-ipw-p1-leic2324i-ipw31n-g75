@@ -20,7 +20,7 @@ export default {
     INVALID_PARAMETER: (arg, description) => {
         return {
             code: 1,
-            message: `Invalid argument ${arg}`,
+            message: `Invalid argument - ${arg}`,
             description: description
         }
     },
