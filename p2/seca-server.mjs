@@ -3,12 +3,14 @@ import express from 'express'
 import * as userData from "./data/seca-user-data-mem.mjs";
 import * as groupData from "./data/seca-group-data-mem.js";
 import * as eventsData from "./data/tm-events-data.mjs";
+import * as staticSite from "./web/site/seca-static.mjs";
 import userServicesInit from "./services/seca-user-services.mjs";
 import userApiInit from "./web/api/seca-user-web-api.mjs";
 import groupServicesInit from "./services/seca-group-services.mjs";
 import groupsApiInit from "./web/api/seca-group-web-api.mjs";
 import eventsServicesInit from "./services/seca-tm-events-services.mjs";
 import eventsApiInit from "./web/api/seca-tm-events-web-api.mjs";
+import groupsSiteInit from "./web/site/seca-web-site.mjs";
 
 
 import bodyParser from 'body-parser';
@@ -29,27 +31,36 @@ const groupsApi = groupsApiInit(groupServices)
 const eventsServices = eventsServicesInit(groupData, eventsData)
 const eventsApi = eventsApiInit(eventsServices)
 
+const groupsSite = groupsSiteInit(groupServices)
+
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc))
+app.use("/site", express.static("./web/site/public"))
 
+// Site routes
+app.get("/site", staticSite.getHome)
+app.get("/site/groups/:id", groupsSite.getGroup)
+
+
+// API routes
 app.route("/users")
     .post(userApi.insertUser)
 
-app.route("/groups")
+app.route("api/groups")
     .get(groupsApi.listGroups)
     .post(groupsApi.createGroup)
 
-app.route("/groups/:id")
+app.route("api/groups/:id")
     .get(groupsApi.getGroup)
     .post(groupsApi.addEvent)
     .put(groupsApi.updateGroup)
     .delete(groupsApi.deleteGroup)
 
-app.route("/groups/:groupId/:eventId")
+app.route("api/groups/:groupId/:eventId")
     .delete(groupsApi.removeEvent)
 
-app.route("/events")
+app.route("api/events")
     .get(eventsApi.getPopularEvents)
 
 app.route("/events/:name")
