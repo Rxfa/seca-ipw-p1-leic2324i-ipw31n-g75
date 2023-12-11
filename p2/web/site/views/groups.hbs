@@ -1,0 +1,36 @@
+<div class="d-flex flex-column justify-content-center align-items-center h-100">
+    <h1>All groups</h1>
+    <h2>Create a new group</h2>
+    <form method="POST" action="/site/groups">
+        <div class="form-floating form-row mb-3 mx-auto">
+            <input
+                    class="form-control"
+                    aria-label="Name"
+                    type="text"
+                    name="name"
+                    value=""
+                    id="nameFloatingInput"
+            >
+            <label for="nameFloatingInput">Name</label>
+        </div>
+        <div class="form-floating form-row mb-3 mx-auto">
+            <textarea
+                    class="form-control"
+                    name="description"
+                    id="descriptionFloatingInput"
+            ></textarea>
+            <label for="descriptionFloatingInput">Describe this group here</label>
+        </div>
+        <input type="submit" value="Create group">
+    </form>
+
+<hr>
+
+<section>
+    {{#each groups}}
+        <section class="mb-3">
+            {{> groupPartial}}
+        </section>
+    {{/each}}
+</section>
+</div>

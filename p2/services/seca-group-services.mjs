@@ -1,12 +1,12 @@
 import errors from "../web/errors.mjs";
 import {isValidString} from "../utils/utils.mjs";
 
-export default function(groupData, userData, eventData){
+export default function(groupData, userData, eventsData){
     if(!groupData)
         throw errors.INVALID_PARAMETER("groupData")
     if(!userData)
         throw errors.INVALID_PARAMETER("userData")
-    if(!eventData)
+    if(!eventsData)
         throw errors.INVALID_PARAMETER("eventData")
     return {
         listGroups: listGroups,
@@ -54,7 +54,10 @@ export default function(groupData, userData, eventData){
             throw errors.GROUP_NOT_FOUND(groupId)
         if(!isValidString(group.name, group.description))
             throw errors.INVALID_PARAMETER("name or description")
-        return await groupData.updateGroup(user.id, groupId, group)
+        const updatedGroup = await groupData.getGroup(user.id, groupId)
+        updatedGroup.name = group.name
+        updatedGroup.description = group.description
+        return await groupData.updateGroup(user.id, groupId, updatedGroup)
     }
 
     async function deleteGroup(token, groupID){
@@ -64,7 +67,7 @@ export default function(groupData, userData, eventData){
         const groups = await groupData.deleteGroup(user.id, groupID)
         if(!groups)
             throw errors.GROUP_NOT_FOUND(groupID)
-        return groups
+        return await groupData.listGroups(user.id)
     }
 
     async function addEvent(userToken, eventId, groupId){
@@ -72,10 +75,10 @@ export default function(groupData, userData, eventData){
         const group = await groupData.getGroup(user.id, groupId)
         if(!group)
             throw errors.GROUP_NOT_FOUND(groupId)
-        const event = await eventData.getEvent(eventId)
+        const event = await eventsData.getEvent(eventId)
         if(!event)
             throw errors.EVENT_NOT_FOUND(eventId)
-        const events = await groupData.addEvent(user.id, groupId, event)
+        const events = await groupData.addEvent(user.id, group, event)
         if(!events)
             throw errors.EVENT_ALREADY_EXISTS(eventId)
         return events
@@ -86,7 +89,7 @@ export default function(groupData, userData, eventData){
         const group = await groupData.getGroup(user.id, groupId)
         if(!group)
             throw errors.GROUP_NOT_FOUND(groupId)
-        const events = await groupData.removeEvent(user.id, groupId, eventId)
+        const events = await groupData.removeEvent(user.id, group, eventId)
         if(!events)
             throw errors.EVENT_NOT_FOUND(eventId)
         return events

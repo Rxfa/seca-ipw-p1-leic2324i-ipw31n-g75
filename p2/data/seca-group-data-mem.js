@@ -2,8 +2,8 @@ export const GROUPS = [
     {
         id: 1,
         owner: 1,
-        name: "name",
-        description: "description",
+        name: "name1",
+        description: "desc1",
         events: []
     },
 ]

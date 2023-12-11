@@ -23,7 +23,6 @@ export async function getEvent(id){
 }
 
 function transformEvents(data){
-    console.log(data)
     return data["_embedded"]["events"].map(event => {
         return {
             id: event["id"],
