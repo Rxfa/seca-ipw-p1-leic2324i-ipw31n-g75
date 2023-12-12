@@ -1,10 +1,18 @@
 <section class="text-bg-primary p-3 mx-auto align-items-around">
     <div class="vstack justify-content-center align-items-around">
         <div class="hstack gap-5">
-            <h2>{{name}}</h2>
-            <h1 >{{id}}</h1>
+            <p>{{name}}</p>
+            <p >{{id}}</p>
         </div>
-        <h4>{{description}}</h4>
-        <h4>{{events}}</h4>
+        <p>{{description}}</p>
+        <p>{{events}}</p>
+    </div>
+    <div class="hstack justify-content-around">
+        <form method="GET" action="/site/groups/{{id}}/update">
+            <input type="submit" value="Edit Group">
+        </form>
+        <form method="POST" action="/site/groups/{{id}}/delete">
+            <input type="submit" value="Delete Group">
+        </form>
     </div>
 </section>

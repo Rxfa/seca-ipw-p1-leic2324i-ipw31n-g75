@@ -1,5 +1,5 @@
 import { expect } from "chai";
-import * as usersData from "../data/seca-user-data-mem.mjs";
+import * as usersData from "../data/memory/seca-user-data-mem.mjs";
 import servicesInit from "../services/seca-user-services.mjs";
 import * as utils from "../utils/utils.mjs";
 

@@ -68,7 +68,7 @@ export default function (services){
 
     function wrapper(func) {
         return async function(req, res){
-            req.token = "ef604e80-a351-4d13-b78f-c888f3e63b6"
+            req.token = "1004778d-1101-4f8d-8bfa-2faac513e05b"
             try {
                 const view = await func(req, res)
                 if(view){

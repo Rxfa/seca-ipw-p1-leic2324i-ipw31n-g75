@@ -1,6 +1,6 @@
 import { expect } from "chai";
-import * as usersData from "../data/seca-user-data-mem.mjs";
-import * as groupData from "../data/seca-group-data-mem.js";
+import * as usersData from "../data/memory/seca-user-data-mem.mjs";
+import * as groupData from "../data/memory/seca-group-data-mem.js";
 import * as eventsData from "./mock-data/tm-events-data-mock.mjs";
 import userServicesInit from "../services/seca-user-services.mjs";
 import groupServicesInit from "../services/seca-group-services.mjs";

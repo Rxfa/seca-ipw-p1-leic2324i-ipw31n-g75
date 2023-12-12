@@ -1,7 +1,7 @@
 import express from 'express'
 
-import userDataInit from "./data/seca-user-data-elastic.mjs";
-import groupDataInit from "./data/seca-group-data-elastic.mjs";
+import userDataInit from "./data/elastic/seca-user-data-elastic.mjs";
+import groupDataInit from "./data/elastic/seca-group-data-elastic.mjs";
 import * as eventsData from "./data/tm-events-data.mjs";
 import * as staticSite from "./web/site/seca-static.mjs";
 import userServicesInit from "./services/seca-user-services.mjs";
