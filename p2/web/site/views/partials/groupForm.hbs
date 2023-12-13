@@ -1,20 +1,22 @@
 <form method="POST" action="{{action}}">
     <div class="form-floating form-row mb-3 mx-auto">
         <input
-                class="form-control"
-                aria-label="Name"
-                type="text"
-                name="name"
-                value=""
-                id="nameFloatingInput"
+            class="form-control"
+            aria-label="Name"
+            type="text"
+            name="name"
+            value=""
+            id="nameFloatingInput"
+            required
         >
         <label for="nameFloatingInput">Name</label>
     </div>
     <div class="form-floating form-row mb-3 mx-auto">
             <textarea
-                    class="form-control"
-                    name="description"
-                    id="descriptionFloatingInput"
+                class="form-control"
+                name="description"
+                id="descriptionFloatingInput"
+                required
             ></textarea>
         <label for="descriptionFloatingInput">Describe this group here</label>
     </div>

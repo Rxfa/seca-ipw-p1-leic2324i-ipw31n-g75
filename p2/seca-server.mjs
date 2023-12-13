@@ -60,8 +60,8 @@ app.route("/site/groups")
     .post(groupsSite.createGroup)
 
 app.get("/site/groups/:id", groupsSite.getGroup)
-app.post("/site/groups/:id/update", groupsSite.updateGroup)
-app.post("/site/groups/:id/delete", groupsSite.deleteGroup)
+app.post("/site/groups/update", groupsSite.updateGroup)
+app.post("/site/groups/delete", groupsSite.deleteGroup)
 
 // API routes
 app.route("/users")

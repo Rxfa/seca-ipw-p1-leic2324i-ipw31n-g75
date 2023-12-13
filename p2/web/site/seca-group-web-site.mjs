@@ -53,12 +53,14 @@ export default function (services){
     }
 
     async function deleteGroup(req, res){
-        await services.deleteGroup(req.token, req.params.id)
+        await services.deleteGroup(req.token, req.body.id)
         res.redirect("/site/groups")
     }
 
     async function updateGroup(req, res){
-
+        console.log(req.token)
+        await services.updateGroup(req.token, req.body.id, req.body)
+        res.redirect("/site/groups")
     }
 
     function sendFile(fileName, res){

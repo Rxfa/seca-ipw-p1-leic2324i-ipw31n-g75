@@ -4,13 +4,13 @@
     <h2>Create a new group</h2>
     {{> groupForm btnAction="Create" action="/site/groups"}}
 
-<hr>
+    <hr>
 
-<section>
-    {{#each groups}}
-        <section class="mb-3">
-            {{> groupPartial}}
-        </section>
-    {{/each}}
-</section>
+    <section>
+        {{#each groups}}
+            <section class="mb-3">
+                {{> groupPartial}}
+            </section>
+        {{/each}}
+    </section>
 </div>

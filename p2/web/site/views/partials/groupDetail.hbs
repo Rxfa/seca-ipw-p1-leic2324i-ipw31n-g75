@@ -6,12 +6,17 @@
         </div>
         <p>{{description}}</p>
     </div>
+    <section>
+        {{#each events}}
+            <hr>
+            {{> eventPartial}}
+        {{/each}}
+    </section>
     <div class="hstack justify-content-around">
-        <form method="GET" action="/site/groups/{{id}}">
-            <input type="submit" value="Edit Group">
+        <form method="GET" action="/site/groups/{{id}}/update">
+            <input type="submit" value="Save">
         </form>
-        <form method="POST" action="/site/groups/delete">
-            <input type="hidden" value="{{id}}" name="id">
+        <form method="POST" action="/site/groups/{{id}}/delete">
             <input type="submit" value="Delete Group">
         </form>
     </div>
