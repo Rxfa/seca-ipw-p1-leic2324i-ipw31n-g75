@@ -25,7 +25,7 @@ function transformEvent(event){
         id: event["id"],
         name: event["name"],
         date: event["dates"]["start"]["dateTime"],
-        imageUrl: event["images"][0]["url"],
+        imageUrl: event.images.find(image => image["ratio"] === "3_2")["url"],
         sales: {
             start: event["sales"]["public"]["startDateTime"],
             end: event["sales"]["public"]["endDateTime"],
