@@ -7,10 +7,10 @@
         <p>{{description}}</p>
     </div>
     <div class="hstack justify-content-around">
-        <form method="GET" action="/site/groups/{{id}}">
+        <form method="GET" action="/groups/{{id}}">
             <input type="submit" value="Edit Group">
         </form>
-        <form method="POST" action="/site/groups/delete">
+        <form method="POST" action="/groups/delete">
             <input type="hidden" value="{{id}}" name="id">
             <input type="submit" value="Delete Group">
         </form>

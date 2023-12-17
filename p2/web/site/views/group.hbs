@@ -12,6 +12,8 @@
             {{#each events}}
                 <hr>
                 <li>{{> eventPartial}}</li>
+            {{else}}
+                <p>No events in this group</p>
             {{/each}}
         </ul>
 

@@ -10,13 +10,13 @@ import groupServicesInit from "./services/seca-group-services.mjs";
 import groupsApiInit from "./web/api/seca-group-web-api.mjs";
 import eventsServicesInit from "./services/seca-tm-events-services.mjs";
 import eventsApiInit from "./web/api/seca-tm-events-web-api.mjs";
-import groupsSiteInit from "./web/site/seca-group-web-site.mjs";
+import siteInit from "./web/site/seca-group-web-site.mjs";
 
 
 import bodyParser from 'body-parser';
 import yaml from "yamljs";
 import swaggerUi from "swagger-ui-express";
-
+import {port} from "./config.mjs";
 import url from "url";
 import path from "path";
 import hbs from "hbs";
@@ -24,7 +24,6 @@ import hbs from "hbs";
 const swaggerDoc = yaml.load("./docs/seca-docs.yaml")
 
 let app = express()
-const PORT = 3000
 
 const userData = await userDataInit()
 const groupData = await groupDataInit()
@@ -38,7 +37,7 @@ const groupsApi = groupsApiInit(groupServices)
 const eventsServices = eventsServicesInit(groupData, eventsData)
 const eventsApi = eventsApiInit(eventsServices)
 
-const groupsSite = groupsSiteInit(groupServices)
+const site = siteInit(groupServices, eventsServices)
 
 const currentPath = url.fileURLToPath(new URL(".", import.meta.url))
 const viewsDir = path.join(currentPath, "web", "site", "views")
@@ -50,40 +49,45 @@ hbs.registerPartials(path.join(viewsDir, "partials"))
 app.use(bodyParser.json())
 app.use(bodyParser.urlencoded({ extended: false }))
 app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc))
-app.use("/site", express.static("./web/site/public"))
+app.use("/", express.static("./web/site/public"))
 
 // Site routes
-app.get("/site", staticSite.getHome)
-
-app.route("/site/groups")
-    .get(groupsSite.listGroups)
-    .post(groupsSite.createGroup)
-
-app.get("/site/groups/:id", groupsSite.getGroup)
-app.post("/site/groups/update", groupsSite.updateGroup)
-app.post("/site/groups/delete", groupsSite.deleteGroup)
-
-// API routes
-app.route("/users")
-    .post(userApi.insertUser)
+app.get("/", staticSite.getHome)
 
 app.route("/groups")
+    .get(site.listGroups)
+    .post(site.createGroup)
+
+app.get("/groups/:id", site.getGroup)
+app.post("/groups/update", site.updateGroup)
+app.post("/groups/delete", site.deleteGroup)
+app.get("/events", site.eventSearch)
+app.get("/events/popular", site.getPopularEvents)
+app.get("/events/search", site.getEventsByName)
+app.post("/groups/addEvent", site.addEvent)
+app.post("/groups/removeEvent", site.removeEvent)
+
+// API routes
+app.route("api/users")
+    .post(userApi.insertUser)
+
+app.route("api/groups")
     .get(groupsApi.listGroups)
     .post(groupsApi.createGroup)
 
-app.route("/groups/:id")
+app.route("api/groups/:id")
     .get(groupsApi.getGroup)
     .post(groupsApi.addEvent)
     .put(groupsApi.updateGroup)
     .delete(groupsApi.deleteGroup)
 
-app.route("/groups/:groupId/:eventId")
+app.route("api/groups/:groupId/:eventId")
     .delete(groupsApi.removeEvent)
 
-app.route("/events")
+app.route("api/events")
     .get(eventsApi.getPopularEvents)
 
-app.route("/events/:name")
+app.route("api/events/:name")
     .get(eventsApi.getEventByName)
 
-app.listen(PORT, () => console.log(`listening on port 3000`))
+app.listen(port, () => console.log(`listening on port ${port}`))

@@ -1,5 +1,5 @@
 import errors from "../web/errors.mjs";
-import {isValidString} from "../utils/utils.mjs";
+import {isValidString} from "../utils.mjs";
 
 export default function(groupData, userData, eventsData){
     if(!groupData)
@@ -20,9 +20,8 @@ export default function(groupData, userData, eventsData){
 
     async function listGroups(token){
         const user = await userData.getUser(token)
-        if(!user){
+        if(!user)
             throw errors.USER_NOT_FOUND()
-        }
         return await groupData.listGroups(user.id)
     }
 

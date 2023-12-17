@@ -12,8 +12,8 @@ function View(name, data){
     }
 }
 
-export default function (services){
-    if(!services){
+export default function (groupServices, eventServices){
+    if(!groupServices){
         throw errors.INVALID_PARAMETER("GroupServices")
     }
 
@@ -25,8 +25,12 @@ export default function (services){
         createGroup: wrapper(createGroup),
         updateGroup: wrapper(updateGroup),
         deleteGroup: wrapper(deleteGroup),
-        //addEvent: wrapper(addEvent),
-        //removeEvent: wrapper(removeEvent),
+        getPopularEvents: wrapper(getPopularEvents),
+        getEventsByName: wrapper(getEventsByName),
+        getEvent: wrapper(getEvent),
+        eventSearch: wrapper(eventSearch),
+        addEvent: wrapper(addEvent),
+        removeEvent: wrapper(removeEvent),
     }
 
     async function getHome(req, res){
@@ -38,29 +42,59 @@ export default function (services){
     }
 
     async function listGroups(req, res){
-        const groups = await services.listGroups(req.token)
+        const groups = await groupServices.listGroups(req.token)
         return new View("groups", {title:"All groups", groups: groups})
     }
 
     async function getGroup(req, res){
-        const group = await services.getGroup(req.token, req.params.id)
+        const group = await groupServices.getGroup(req.token, req.params.id)
         return new View("group", group)
     }
 
     async function createGroup(req, res){
-        await services.createGroup(req.token, req.body)
-        res.redirect("/site/groups")
+        await groupServices.createGroup(req.token, req.body)
+        res.redirect("/groups")
     }
 
     async function deleteGroup(req, res){
-        await services.deleteGroup(req.token, req.body.id)
-        res.redirect("/site/groups")
+        await groupServices.deleteGroup(req.token, req.body.id)
+        res.redirect("/groups")
     }
 
     async function updateGroup(req, res){
-        console.log(req.token)
-        await services.updateGroup(req.token, req.body.id, req.body)
-        res.redirect("/site/groups")
+        await groupServices.updateGroup(req.token, req.body.id, req.body)
+        res.redirect("/groups")
+    }
+
+    async function getPopularEvents(req, res){
+        const events = await eventServices.getPopularEvents(req.query.limit, req.query.page)
+        return new View("events", {events})
+    }
+
+    async function getEventsByName(req, res){
+        const events = await eventServices.getEventByName(req.query.name, req.query.limit, req.query.page)
+        const groups = await groupServices.listGroups(req.token)
+        return new View("events", {events: events, groups: groups})
+    }
+
+    async function getEvent(req, res){
+        const event = await eventServices.getEvent(req.params.id)
+        return new View("events", event)
+    }
+
+    async function eventSearch(req, res){
+        return new View("searchEvent", {})
+    }
+
+    async function addEvent(req, res){
+        console.log(req.body)
+        await groupServices.addEvent(req.token, req.body.eventId, req.body.groupId)
+        res.redirect(`/groups/${req.body.groupId}`)
+    }
+
+    async function removeEvent(req, res){
+        await groupServices.removeEvent()
+        res.redirect(`/groups/${req.body.id}`)
     }
 
     function sendFile(fileName, res){

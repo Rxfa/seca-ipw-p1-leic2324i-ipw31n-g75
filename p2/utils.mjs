@@ -4,7 +4,6 @@ export function randomString(size){
     let str = "";
     for(let i = 0; i < size; i++){
         str += ALPHABET.charAt(randomChar(ALPHABET.length - 1))
-        
     }
     return str
 }
@@ -31,4 +30,19 @@ export function randomGroup() {
         name: randomString(6),
         description: randomString(20)
     }
+}
+
+export function isPositiveInteger(arg){
+    return typeof arg === "number" && arg >= 0
+}
+
+
+
+export function formatDate(dateStr, dateSep="/", timeSep=":"){
+    const isoDate = new Date(dateStr)
+    const date = [isoDate.getDate(), isoDate.getMonth(), isoDate.getFullYear()].join(dateSep)
+    const time = [isoDate.getHours(), isoDate.getMinutes(), isoDate.getSeconds()]
+        .map(i => i === 0 ? "00" : i.toString())
+        .join(timeSep)
+    return `${date} ${time}`
 }

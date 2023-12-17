@@ -1,35 +1,40 @@
-import * as dotenv from "dotenv";
-
-dotenv.config()
-const apiKey = process.env.API_KEY
-const baseURL = `https://app.ticketmaster.com/discovery/v2/events.json?apikey=${apiKey}`
+import {formatDate} from "../utils.mjs";
+import {tmBaseUrl} from "../config.mjs";
 
 export async function getPopularEvents(limit, page){
-    const data = await fetch(`${baseURL}&size=${limit}&page=${page}&sort=relevance,desc`)
-    const events = await data.json()
-    return transformEvents(events)
+    let data = await fetch(`${tmBaseUrl}&size=${limit}&page=${page}&sort=relevance,desc`)
+    data = await data.json()
+    return transformEvent(data["_embedded"]["events"])
 }
 
 export async function getEventByName(name, limit, page){
-    const data = await fetch(`${baseURL}&size=${limit}&page=${page}&keyword=${name}`)
-    const events = await data.json()
-    return transformEvents(events)
+    let data = await fetch(`${tmBaseUrl}&size=${limit}&page=${page}&keyword=${name}`)
+    data = await data.json()
+    return data["_embedded"]["events"].map(event => transformEvent(event))
 }
 
 export async function getEvent(id){
-    const data = await fetch(`${baseURL}&id=${id}`)
-    const event = await data.json()
-    return transformEvents(event)[0]
+    let data = await fetch(`${tmBaseUrl}/${id}`)
+    data = await data.json()
+    return transformEvent(data)
 }
 
-function transformEvents(data){
-    return data["_embedded"]["events"].map(event => {
-        return {
-            id: event["id"],
-            name: event["name"],
-            date: event["dates"]["start"]["dateTime"],
-            segment: event["classifications"][0] !== undefined ? event["classifications"][0]["segment"]["name"] : undefined,
-            genre: event["classifications"][0] !== undefined ? event["classifications"][0]["genre"]["name"] : undefined
-        }
-    })
+function transformEvent(event){
+    return {
+        id: event["id"],
+        name: event["name"],
+        date: formatDate(event["dates"]["start"]["dateTime"]),
+        imageUrl: event["images"][0]["url"],
+        sales: {
+            start: formatDate(event["sales"]["public"]["startDateTime"]),
+            end: formatDate(event["sales"]["public"]["endDateTime"]),
+        },
+        segment: strOrUndefined(event["classifications"][0], "segment"),
+        genre: strOrUndefined(event["classifications"][0], "genre"),
+        subGenre: strOrUndefined(event["classifications"][0], "subGenre")
+    }
+}
+
+function strOrUndefined(event, field){
+    return event !== undefined ? event[field]["name"] : undefined
 }

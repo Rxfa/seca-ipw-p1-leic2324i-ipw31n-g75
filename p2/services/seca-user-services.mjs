@@ -1,5 +1,5 @@
 import errors from "../web/errors.mjs";
-import {isValidString} from "../utils/utils.mjs";
+import {isValidString} from "../utils.mjs";
 
 export default function(userData){
     return {

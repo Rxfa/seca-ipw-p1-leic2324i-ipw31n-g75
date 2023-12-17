@@ -1,6 +1,6 @@
 import toHttpErrorResponse from "./response-errors.mjs";
 import errors from "../errors.mjs";
-import {isValidToken} from "../../utils/utils.mjs";
+import {isValidToken} from "../../utils.mjs";
 
 
 export default function (services){

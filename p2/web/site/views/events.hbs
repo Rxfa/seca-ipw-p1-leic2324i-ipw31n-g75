@@ -1,0 +1,18 @@
+<div class="container text-center">
+    <h1>Results search</h1>
+    {{#each events}}
+        <div class="row justify-content-center">
+            {{> event}}
+            <label for="groups">Add to group</label>
+            <form action="/groups/addEvent" method="post" id="addEvent">
+                <input type="hidden" name="eventId" value="{{id}}">
+                <select name="groupId">
+                    {{#each ../groups}}
+                        <option value="{{this.id}}">{{this.name}}</option>
+                    {{/each}}
+                </select>
+                <input type="submit">
+            </form>
+        </div>
+    {{/each}}
+</div>

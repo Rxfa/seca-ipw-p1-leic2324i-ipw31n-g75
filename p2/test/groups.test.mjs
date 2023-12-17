@@ -4,7 +4,7 @@ import * as groupData from "../data/memory/seca-group-data-mem.js";
 import * as eventsData from "./mock-data/tm-events-data-mock.mjs";
 import userServicesInit from "../services/seca-user-services.mjs";
 import groupServicesInit from "../services/seca-group-services.mjs";
-import * as utils from "../utils/utils.mjs";
+import * as utils from "../utils.mjs";
 import errors from "../web/errors.mjs";
 
 const userServices = userServicesInit(usersData)

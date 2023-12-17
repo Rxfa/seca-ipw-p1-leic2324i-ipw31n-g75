@@ -1,7 +1,7 @@
 import { expect } from "chai";
 import * as usersData from "../data/memory/seca-user-data-mem.mjs";
 import servicesInit from "../services/seca-user-services.mjs";
-import * as utils from "../utils/utils.mjs";
+import * as utils from "../utils.mjs";
 
 const services = servicesInit(usersData)
 describe("create user", function(){
