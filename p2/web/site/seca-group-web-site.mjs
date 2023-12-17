@@ -1,4 +1,5 @@
 import url from 'url';
+import {userToken} from "../../config.mjs";
 import errors from "../errors.mjs";
 import toHttpErrorResponse from "../api/response-errors.mjs";
 
@@ -62,8 +63,10 @@ export default function (groupServices, eventServices){
     }
 
     async function updateGroup(req, res){
-        await groupServices.updateGroup(req.token, req.body.id, req.body)
-        res.redirect("/groups")
+        console.log(req.body)
+        const groupId = req.body.id
+        await groupServices.updateGroup(req.token, groupId, req.body)
+        res.redirect(`/groups/${groupId}`)
     }
 
     async function getPopularEvents(req, res){
@@ -95,8 +98,10 @@ export default function (groupServices, eventServices){
     }
 
     async function removeEvent(req, res){
-        await groupServices.removeEvent()
-        res.redirect(`/groups/${req.body.id}`)
+        console.log("here")
+        const groupId = req.body.groupId
+        await groupServices.removeEvent(req.token, req.body.eventId, groupId)
+        res.redirect(`/groups/${groupId}`)
     }
 
     function sendFile(fileName, res){
@@ -106,7 +111,7 @@ export default function (groupServices, eventServices){
 
     function wrapper(func) {
         return async function(req, res){
-            req.token = "1004778d-1101-4f8d-8bfa-2faac513e05b"
+            req.token = userToken
             try {
                 const view = await func(req, res)
                 if(view){

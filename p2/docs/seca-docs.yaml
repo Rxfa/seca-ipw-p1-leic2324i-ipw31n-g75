@@ -11,7 +11,7 @@ tags:
   - name: Groups
   - name: Events
 paths:
-  /users:
+  /api/users:
     description: The resource that contains all users
     post:
       tags:
@@ -42,7 +42,7 @@ paths:
         400:
           description: Invalid input
           content: {}
-  /groups:
+  /api/groups:
     description: Resource that contains all Groups
     get:
       tags:
@@ -95,7 +95,7 @@ paths:
         404:
           $ref: "#/components/responses/404NotFound"
 
-  /groups/:GroupId:
+  /api/groups/:GroupId:
     description: The resource that represents one Group
     get:
       tags:
@@ -233,7 +233,7 @@ paths:
           $ref: "#/components/responses/401Unauthorized"
         404:
           $ref: "#/components/responses/404NotFound"
-  /groups/:GroupId/:eventId:
+  /api/groups/:GroupId/:eventId:
     delete:
       tags:
         - Groups
@@ -270,7 +270,7 @@ paths:
           $ref: "#/components/responses/401Unauthorized"
         404:
           $ref: "#/components/responses/404NotFound"
-  /events:
+  /api/events:
     description: the resource that get all Events
     get:
       tags:
@@ -302,7 +302,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/Event"
 
-  /events/:name:
+  /api/events/:name:
     get:
       tags:
         - Events

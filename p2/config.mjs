@@ -2,6 +2,8 @@ import * as dotenv from "dotenv";
 
 dotenv.config()
 
+export const userToken = process.env.userToken
+
 export const apiKey = process.env.API_KEY
 
 export const tmBaseUrl = "https://app.ticketmaster.com/discovery/v2"

@@ -34,18 +34,19 @@ export default async function(indexName = "groups"){
             description: group.description,
             events: []
         }
-        return post(URI_MANAGER.create(), newGroup).then(body => {
+        return await post(URI_MANAGER.create(), newGroup).then(body => {
             newGroup.id = body["_id"]
             return newGroup
         })
     }
 
     async function updateGroup(ownerID, groupID, updatedGroup) {
-        return put(URI_MANAGER.update(groupID), updatedGroup).then(updatedGroup)
+        //delete updatedGroup.id
+        return await post(URI_MANAGER.update(groupID), {doc: updatedGroup}).then(updatedGroup)
     }
 
     async function deleteGroup(ownerID, groupID){
-        return del(URI_MANAGER.delete(groupID)).then(body => {
+        return await del(URI_MANAGER.delete(groupID)).then(body => {
             if(body["result"] !== "not_found")
                 return body["_id"]
         })
@@ -55,12 +56,7 @@ export default async function(indexName = "groups"){
         if(group.events.find(e => e.id === event.id))
            return
         group.events.push(event)
-        const groupClone = {...group}
-        delete groupClone.id;
-        // We clone the group obj because elastic throws when going through group ID
-        const hm = await post(URI_MANAGER.update(group.id), {doc: group})
-        console.log(hm)
-        console.log(group)
+        await post(URI_MANAGER.update(group.id), {doc: group})
         return group
     }
 
@@ -68,7 +64,7 @@ export default async function(indexName = "groups"){
         const eventIdx = group.events.findIndex(e => e.id === eventId)
         if(eventIdx !== -1){
             group.events.splice(eventIdx, 1)
-            await put(URI_MANAGER.update(group.id), group)
+            await post(URI_MANAGER.update(group.id), {doc: group})
             return group
         }
     }

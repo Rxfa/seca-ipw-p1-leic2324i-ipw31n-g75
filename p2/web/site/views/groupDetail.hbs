@@ -4,7 +4,7 @@
     {{> groupForm btnAction="Update" action="/groups/update/" isDeletable=true groupId=id}}
     <div class="align-items-around">
         {{#each events}}
-            {{> event}}
+            {{> event groupId=../id}}
         {{else}}
             <p>No events in this group</p>
         {{/each}}

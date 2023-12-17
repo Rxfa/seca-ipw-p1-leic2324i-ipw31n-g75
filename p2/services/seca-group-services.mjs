@@ -51,11 +51,13 @@ export default function(groupData, userData, eventsData){
             throw errors.USER_NOT_FOUND()
         if(!(await groupData.getGroup(user.id, groupId)))
             throw errors.GROUP_NOT_FOUND(groupId)
-        if(!isValidString(group.name, group.description))
+        if(!isValidString(group.name)){
+            console.log(group)
             throw errors.INVALID_PARAMETER("name or description")
+        }
         const updatedGroup = await groupData.getGroup(user.id, groupId)
         updatedGroup.name = group.name
-        updatedGroup.description = group.description
+        updatedGroup.description = group.description !== undefined ? group.description : updatedGroup.description
         return await groupData.updateGroup(user.id, groupId, updatedGroup)
     }
 
@@ -85,6 +87,7 @@ export default function(groupData, userData, eventsData){
     }
 
     async function removeEvent(userToken, eventId, groupId){
+        console.log(groupId)
         const user = await userData.getUser(userToken)
         const group = await groupData.getGroup(user.id, groupId)
         if(!group)

@@ -1,8 +1,6 @@
 <div class="justify-content-center align-items-center text-center my-5">
     <form method="POST" action="{{action}}" class="g-3">
-        {{#unless isDeletable}}
-            <h5 class="display-5">{{btnAction}} group</h5>
-        {{/unless}}
+        <input type="hidden" name="id" id="id" value="{{groupId}}">
         <div class="input-group mb-3">
             <span class="input-group-text" >Name</span>
             <input type="text" class="form-control" aria-label="Sizing example input"

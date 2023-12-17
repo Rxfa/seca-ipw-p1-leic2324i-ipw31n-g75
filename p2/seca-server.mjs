@@ -68,26 +68,26 @@ app.post("/groups/addEvent", site.addEvent)
 app.post("/groups/removeEvent", site.removeEvent)
 
 // API routes
-app.route("api/users")
+app.route("/api/users")
     .post(userApi.insertUser)
 
-app.route("api/groups")
+app.route("/api/groups")
     .get(groupsApi.listGroups)
     .post(groupsApi.createGroup)
 
-app.route("api/groups/:id")
+app.route("/api/groups/:id")
     .get(groupsApi.getGroup)
     .post(groupsApi.addEvent)
     .put(groupsApi.updateGroup)
     .delete(groupsApi.deleteGroup)
 
-app.route("api/groups/:groupId/:eventId")
+app.route("/api/groups/:groupId/:eventId")
     .delete(groupsApi.removeEvent)
 
-app.route("api/events")
+app.route("/api/events")
     .get(eventsApi.getPopularEvents)
 
-app.route("api/events/:name")
+app.route("/api/events/:name")
     .get(eventsApi.getEventByName)
 
 app.listen(port, () => console.log(`listening on port ${port}`))

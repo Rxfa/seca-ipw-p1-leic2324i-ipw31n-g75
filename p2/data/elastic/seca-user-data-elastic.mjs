@@ -6,9 +6,16 @@ export default async function(indexName = "users"){
     const URI_MANAGER = await uriManager(indexName)
 
     return {
+        listUsers,
         getUser,
         findUser,
         createUser
+    }
+
+    async function listUsers(){
+        const data = await get(URI_MANAGER.list())
+        const res = await data["hits"]["hits"].map(transformUser)
+        return Promise.all(res)
     }
 
     async function getUser(token){
