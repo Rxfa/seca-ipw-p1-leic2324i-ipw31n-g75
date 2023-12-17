@@ -1,17 +1,16 @@
 <div class="container text-center">
-    <h1>Results search</h1>
+    <h1 class="my-5 display-1">Results search</h1>
     {{#each events}}
-        <div class="row justify-content-center">
-            {{> event}}
-            <label for="groups">Add to group</label>
-            <form action="/groups/addEvent" method="post" id="addEvent">
-                <input type="hidden" name="eventId" value="{{id}}">
-                <select name="groupId">
-                    {{#each ../groups}}
-                        <option value="{{this.id}}">{{this.name}}</option>
-                    {{/each}}
-                </select>
-                <input type="submit">
+        <div class="justify-content-center align-items-center mb-5">
+            <form action="/groups/addEvent" method="post" id="addEvent" class="row g-2">
+                    {{> event}}
+                    <input type="hidden" name="eventId" value="{{id}}">
+                    <select name="groupId" class="form-select">
+                        {{#each ../groups}}
+                            <option value="{{this.id}}">{{this.name}}</option>
+                        {{/each}}
+                    </select>
+                    <button class="btn btn-primary" type="submit">Add Event</button>
             </form>
         </div>
     {{/each}}

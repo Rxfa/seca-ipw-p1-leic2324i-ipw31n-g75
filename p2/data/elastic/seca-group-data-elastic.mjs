@@ -55,7 +55,12 @@ export default async function(indexName = "groups"){
         if(group.events.find(e => e.id === event.id))
            return
         group.events.push(event)
-        await put(URI_MANAGER.update(group.id), group)
+        const groupClone = {...group}
+        delete groupClone.id;
+        // We clone the group obj because elastic throws when going through group ID
+        const hm = await post(URI_MANAGER.update(group.id), {doc: group})
+        console.log(hm)
+        console.log(group)
         return group
     }
 

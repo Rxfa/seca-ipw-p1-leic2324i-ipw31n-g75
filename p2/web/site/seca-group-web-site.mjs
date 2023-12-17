@@ -34,7 +34,7 @@ export default function (groupServices, eventServices){
     }
 
     async function getHome(req, res){
-        sendFile("index.html", res)
+        return new View("groups", {})
     }
 
     async function getCss(req, res){
@@ -48,7 +48,7 @@ export default function (groupServices, eventServices){
 
     async function getGroup(req, res){
         const group = await groupServices.getGroup(req.token, req.params.id)
-        return new View("group", group)
+        return new View("groupDetail", group)
     }
 
     async function createGroup(req, res){
@@ -68,7 +68,8 @@ export default function (groupServices, eventServices){
 
     async function getPopularEvents(req, res){
         const events = await eventServices.getPopularEvents(req.query.limit, req.query.page)
-        return new View("events", {events})
+        const groups = await groupServices.listGroups(req.token)
+        return new View("events", {events: events, groups: groups})
     }
 
     async function getEventsByName(req, res){
@@ -88,8 +89,9 @@ export default function (groupServices, eventServices){
 
     async function addEvent(req, res){
         console.log(req.body)
-        await groupServices.addEvent(req.token, req.body.eventId, req.body.groupId)
-        res.redirect(`/groups/${req.body.groupId}`)
+        const groupId = req.body.groupId
+        await groupServices.addEvent(req.token, req.body.eventId, groupId)
+        res.redirect(`/groups/${groupId}`)
     }
 
     async function removeEvent(req, res){

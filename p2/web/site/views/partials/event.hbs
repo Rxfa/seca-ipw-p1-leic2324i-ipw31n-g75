@@ -1,14 +1,18 @@
-<div class="card mb-3" style="max-width: 880px;">
-    <div class="row no-gutters">
+<div class="card mb-3">
+    <div class="row g-0">
         <div class="col-md-4">
-            <img src="{{imageUrl}}" class="card-img" alt="poster">
+            <img src="{{imageUrl}}" class="img-fluid rounded float-left" alt="...">
         </div>
         <div class="col-md-8">
             <div class="card-body">
-                <h5 class="card-title">Name: {{name}}</h5>
-                <p class="card-text">Date: {{date}}</p>
-                <p class="card-text">Genre: {{genre}}</p>
-                <p class="card-text">Segment: {{segment}}</p></div>
+                <h5 class="card-title">{{name}}</h5>
+                <p class="card-text">{{date}}</p>
+                <p class="card-text">{{segment}}</p>
+                <p class="card-text">{{genre}}</p>
+                <p class="card-text">{{subGenre}}</p>
+                <p class="card-text">Sales: {{sales.start}} - {{sales.end}}</p>
+                <p class="card-text"><small class="text-body-secondary">{{id}}</small></p>
+            </div>
         </div>
     </div>
 </div>

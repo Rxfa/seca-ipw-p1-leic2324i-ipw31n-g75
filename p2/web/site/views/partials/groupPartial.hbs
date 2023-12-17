@@ -1,18 +1,11 @@
-<section class="text-bg-primary p-3 mx-auto align-items-around">
-    <div class="vstack justify-content-center align-items-around">
-        <div class="hstack gap-5">
-            <p>{{name}}</p>
-            <p >{{id}}</p>
-        </div>
-        <p>{{description}}</p>
-    </div>
-    <div class="hstack justify-content-around">
-        <form method="GET" action="/groups/{{id}}">
-            <input type="submit" value="Edit Group">
-        </form>
+<div class="card">
+    <div class="card-body justify-content-around">
         <form method="POST" action="/groups/delete">
+            <h2 class="card-title"><a href="/groups/{{id}}">{{name}}</a></h2>
+            <h3 class="card-subtitle mb-2 text-body-secondary">{{description}}</h3>
+            <a class="btn btn-primary" href="/groups/{{id}}">Edit</a>
             <input type="hidden" value="{{id}}" name="id">
-            <input type="submit" value="Delete Group">
+            <button class="btn btn-danger" type="submit">Delete</button>
         </form>
     </div>
-</section>
+</div>

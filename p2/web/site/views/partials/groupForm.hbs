@@ -1,24 +1,29 @@
-<form method="POST" action="{{action}}">
-    <div class="form-floating form-row mb-3 mx-auto">
-        <input
-            class="form-control"
-            aria-label="Name"
-            type="text"
-            name="name"
-            value=""
-            id="nameFloatingInput"
-            required
-        >
-        <label for="nameFloatingInput">Name</label>
-    </div>
-    <div class="form-floating form-row mb-3 mx-auto">
-            <textarea
-                class="form-control"
-                name="description"
-                id="descriptionFloatingInput"
-                required
-            ></textarea>
-        <label for="descriptionFloatingInput">Describe this group here</label>
-    </div>
-    <input type="submit" value="{{btnAction}} group">
-</form>
+<div class="justify-content-center align-items-center text-center my-5">
+    <form method="POST" action="{{action}}" class="g-3">
+        {{#unless isDeletable}}
+            <h5 class="display-5">{{btnAction}} group</h5>
+        {{/unless}}
+        <div class="input-group mb-3">
+            <span class="input-group-text" >Name</span>
+            <input type="text" class="form-control" aria-label="Sizing example input"
+                   aria-describedby="inputGroup-sizing-lg" name="name" required>
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text" >Description</span>
+            <textarea class="form-control" aria-label="With textarea" name="description"></textarea>
+        </div>
+        <div class="row justify-content-center">
+            <button type="submit" class="btn btn-primary mb-3">{{btnAction}} group</button>
+        </div>
+    </form>
+    {{#if isDeletable}}
+        <form action="/groups/delete" method="post">
+            <input type="hidden" name="id" id="id" value="{{groupId}}">
+            <div class="row justify-content-center">
+                <button type="submit" class="btn btn-danger mb-3" onclick="return confirm('Are you sure?')">
+                    Delete group
+                </button>
+            </div>
+        </form>
+    {{/if}}
+</div>

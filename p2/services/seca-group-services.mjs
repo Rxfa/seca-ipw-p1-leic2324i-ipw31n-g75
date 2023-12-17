@@ -75,6 +75,7 @@ export default function(groupData, userData, eventsData){
         if(!group)
             throw errors.GROUP_NOT_FOUND(groupId)
         const event = await eventsData.getEvent(eventId)
+        console.log(eventId)
         if(!event)
             throw errors.EVENT_NOT_FOUND(eventId)
         const events = await groupData.addEvent(user.id, group, event)

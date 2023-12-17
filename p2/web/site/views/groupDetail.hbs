@@ -1,0 +1,12 @@
+<div class="d-flex flex-column justify-content-center align-items-center h-100">
+    <h1 class="display-1">{{name}}</h1>
+    <h5 class="display-5">{{description}}</h5>
+    {{> groupForm btnAction="Update" action="/groups/update/" isDeletable=true groupId=id}}
+    <div class="align-items-around">
+        {{#each events}}
+            {{> event}}
+        {{else}}
+            <p>No events in this group</p>
+        {{/each}}
+    </div>
+</div>

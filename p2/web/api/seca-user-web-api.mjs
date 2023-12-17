@@ -9,8 +9,7 @@ export default function(services){
 
     async function insertUser(req, res) {
         try{
-            const username = req.body.username
-            const token = await services.createUser(username)
+            const token = await services.createUser(req.body.username)
             res.status(201).json({"user-token": token})
         } catch (e){
             res.status(400).json("User already exists")

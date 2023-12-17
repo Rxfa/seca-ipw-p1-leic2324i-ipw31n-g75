@@ -1,10 +1,6 @@
-<div class="d-flex flex-column justify-content-center align-items-center h-100">
-    {{> header}}
-    <h1>All groups</h1>
-    <h2>Create a new group</h2>
+<div class="d-flex flex-column align-items-center justify-content-center h-100">
+    <h1 class="my-5 display-1">New group</h1>
     {{> groupForm btnAction="Create" action="/groups"}}
-
-    <hr>
 
     <section>
         {{#each groups}}

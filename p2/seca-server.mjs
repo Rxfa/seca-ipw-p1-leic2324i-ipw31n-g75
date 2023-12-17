@@ -52,7 +52,7 @@ app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerDoc))
 app.use("/", express.static("./web/site/public"))
 
 // Site routes
-app.get("/", staticSite.getHome)
+app.get("/", site.getHome)
 
 app.route("/groups")
     .get(site.listGroups)
