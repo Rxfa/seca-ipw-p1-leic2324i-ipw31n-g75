@@ -46,3 +46,7 @@ export function formatDate(dateStr, dateSep="/", timeSep=":"){
         .join(timeSep)
     return `${date} ${time}`
 }
+
+export function serializerUserDeserializeUser(user, done) {
+    done(null, user)
+}

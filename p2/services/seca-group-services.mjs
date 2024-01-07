@@ -19,14 +19,15 @@ export default function(groupData, userData, eventsData){
     }
 
     async function listGroups(token){
-        const user = await userData.getUser(token)
+        console.log("listGroups - services", token)
+        const user = await userData.getUserByToken(token)
         if(!user)
             throw errors.USER_NOT_FOUND()
         return await groupData.listGroups(user.id)
     }
 
     async function createGroup(token, group){
-        const user = await userData.getUser(token)
+        const user = await userData.getUserByToken(token)
         if(!user)
             throw errors.USER_NOT_FOUND()
         if(!isValidString(group.name))
@@ -36,7 +37,7 @@ export default function(groupData, userData, eventsData){
 
 
     async function getGroup(token, groupID){
-        const user = await userData.getUser(token)
+        const user = await userData.getUserByToken(token)
         if(!user)
             throw errors.USER_NOT_FOUND()
         const group = await groupData.getGroup(user.id, groupID)
@@ -46,7 +47,7 @@ export default function(groupData, userData, eventsData){
     }
 
     async function updateGroup(token, groupId, group){
-        const user = await userData.getUser(token)
+        const user = await userData.getUserByToken(token)
         if(!user)
             throw errors.USER_NOT_FOUND()
         if(!(await groupData.getGroup(user.id, groupId)))
@@ -62,7 +63,7 @@ export default function(groupData, userData, eventsData){
     }
 
     async function deleteGroup(token, groupID){
-        const user = await userData.getUser(token)
+        const user = await userData.getUserByToken(token)
         if(!user)
             throw errors.USER_NOT_FOUND()
         const groups = await groupData.deleteGroup(user.id, groupID)
@@ -72,7 +73,7 @@ export default function(groupData, userData, eventsData){
     }
 
     async function addEvent(userToken, eventId, groupId){
-        const user = await userData.getUser(userToken)
+        const user = await userData.getUserByToken(userToken)
         const group = await groupData.getGroup(user.id, groupId)
         if(!group)
             throw errors.GROUP_NOT_FOUND(groupId)
@@ -88,7 +89,7 @@ export default function(groupData, userData, eventsData){
 
     async function removeEvent(userToken, eventId, groupId){
         console.log(groupId)
-        const user = await userData.getUser(userToken)
+        const user = await userData.getUserByToken(userToken)
         const group = await groupData.getGroup(user.id, groupId)
         if(!group)
             throw errors.GROUP_NOT_FOUND(groupId)

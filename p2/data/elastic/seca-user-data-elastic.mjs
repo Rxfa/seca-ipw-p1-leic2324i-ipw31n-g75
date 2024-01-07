@@ -7,7 +7,8 @@ export default async function(indexName = "users"){
 
     return {
         listUsers,
-        getUser,
+        getUserByToken: getUserByToken,
+        getUserByUsername: getUserByUsername,
         findUser,
         createUser
     }
@@ -18,30 +19,32 @@ export default async function(indexName = "users"){
         return Promise.all(res)
     }
 
-    async function getUser(token){
+    async function getUserByToken(token){
         return getUserBy("token", token)
+    }
+
+    async function getUserByUsername(username){
+        return getUserBy("username", username)
     }
 
     async function findUser(username){
         return getUserBy("username", username)
     }
 
-    async function createUser(username){
+    async function createUser(username, password){
         const newUser = {
             username: username,
+            password: password,
             token: randomUUID()
         }
-        await post(URI_MANAGER.create(), newUser)
-        return newUser.token
+        const data = await post(URI_MANAGER.create(), newUser)
+        newUser.id = data["_id"]
+        return newUser;
     }
 
     async function getUserBy(prop, value){
         const uri = `${URI_MANAGER.list()}?q=${prop}:${value}`
-        return get(uri).then(body => {
-            const ans = body["hits"]["hits"].map(transformUser)
-            if(ans.length === 1)
-                return ans[0]
-        })
+        return get(uri).then(body => body["hits"]["hits"].map(transformUser))
     }
 
     function transformUser(userElastic){
