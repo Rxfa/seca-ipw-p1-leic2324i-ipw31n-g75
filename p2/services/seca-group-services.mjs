@@ -19,7 +19,6 @@ export default function(groupData, userData, eventsData){
     }
 
     async function listGroups(token){
-        console.log("listGroups - services", token)
         const user = await userData.getUserByToken(token)
         if(!user)
             throw errors.USER_NOT_FOUND()
@@ -52,10 +51,8 @@ export default function(groupData, userData, eventsData){
             throw errors.USER_NOT_FOUND()
         if(!(await groupData.getGroup(user.id, groupId)))
             throw errors.GROUP_NOT_FOUND(groupId)
-        if(!isValidString(group.name)){
-            console.log(group)
+        if(!isValidString(group.name))
             throw errors.INVALID_PARAMETER("name or description")
-        }
         const updatedGroup = await groupData.getGroup(user.id, groupId)
         updatedGroup.name = group.name
         updatedGroup.description = group.description !== undefined ? group.description : updatedGroup.description
@@ -78,17 +75,16 @@ export default function(groupData, userData, eventsData){
         if(!group)
             throw errors.GROUP_NOT_FOUND(groupId)
         const event = await eventsData.getEvent(eventId)
-        console.log(eventId)
         if(!event)
             throw errors.EVENT_NOT_FOUND(eventId)
         const events = await groupData.addEvent(user.id, group, event)
+        console.log(events)
         if(!events)
             throw errors.EVENT_ALREADY_EXISTS(eventId)
         return events
     }
 
     async function removeEvent(userToken, eventId, groupId){
-        console.log(groupId)
         const user = await userData.getUserByToken(userToken)
         const group = await groupData.getGroup(user.id, groupId)
         if(!group)

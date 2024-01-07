@@ -1,16 +1,17 @@
 import {randomUUID} from "crypto";
 import uriManager from "./uri-manager.mjs";
-import {get, post} from "./elastic.mjs";
+import {del, get, post} from "./elastic.mjs";
 
 export default async function(indexName = "users"){
     const URI_MANAGER = await uriManager(indexName)
 
     return {
         listUsers,
-        getUserByToken: getUserByToken,
-        getUserByUsername: getUserByUsername,
-        findUser,
-        createUser
+        getUserByToken,
+        getUserByUsername,
+        createUser,
+        updateUser,
+        deleteUser
     }
 
     async function listUsers(){
@@ -27,10 +28,6 @@ export default async function(indexName = "users"){
         return getUserBy("username", username)
     }
 
-    async function findUser(username){
-        return getUserBy("username", username)
-    }
-
     async function createUser(username, password){
         const newUser = {
             username: username,
@@ -40,6 +37,17 @@ export default async function(indexName = "users"){
         const data = await post(URI_MANAGER.create(), newUser)
         newUser.id = data["_id"]
         return newUser;
+    }
+
+    async function updateUser(id, updatedUser){
+        return await post(URI_MANAGER.update(id), {doc: updatedUser}).then(updatedUser)
+    }
+
+    async function deleteUser(id){
+        return await del(URI_MANAGER.delete(id)).then(body => {
+            if(body["result"] !== "not_found")
+                return body["_id"]
+        })
     }
 
     async function getUserBy(prop, value){

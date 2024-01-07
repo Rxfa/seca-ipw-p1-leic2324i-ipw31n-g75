@@ -1,13 +1,16 @@
 import * as services from "../../services/seca-user-services.mjs"
 import {apiBaseUrl} from "../../config.mjs";
+import {wrapper} from "../../utils.mjs";
+import errors from "../errors.mjs";
 
 
 export default function(services){
+    if (!services)
+        throw errors.INVALID_PARAMETER("usersServices")
     return {
-        listUsers: listUsers,
-        insertUser: insertUser,
-        login: login,
-        logout: logout,
+        insertUser,
+        updateUser: wrapper(updateUser),
+        deleteUser: wrapper(deleteUser),
     }
 
     async function insertUser(req, res) {
@@ -23,26 +26,15 @@ export default function(services){
         res.status(200).json(await services.listUsers())
     }
 
-    async function login(req, res){
-        const username = req.body.username
-        const password = req.body.password
-        if(validateUser(username, password)){
-            const user = {
-                username: username,
-                password: password
-            }
-            await req.login(user)
-        }
-        
-        function validateUser(username, password){
-            // TODO
-            return true
-        }
+    async function createUser(req, res){
+        return await services.createUser(req.body.username, req.body.password)
     }
 
+    async function updateUser(req, res) {
+        return await services.updateUser(req.token, req.body)
+    }
 
-    async function logout(req, res){
-        req.logout()
-        res.redirect('/')
+    async function deleteUser(req, res) {
+        return await services.deleteUser(req.token)
     }
 }

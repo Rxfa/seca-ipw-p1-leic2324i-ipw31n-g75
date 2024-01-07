@@ -1,6 +1,6 @@
 <div class="container-fluid d-flex flex-column text-center gap-3 align-items-center h-100">
     <h1>Login</h1>
-    <form action="/login" method="post" class="gap-5">
+    <form action="{{basePath}}/login" method="post" class="gap-5">
         <div class="input-group mb-3">
             <span class="input-group-text">Username</span>
             <input name="username" class="form-control" type="text" autocomplete="username" required autofocus>
@@ -9,7 +9,7 @@
             <span class="input-group-text">Password</span>
             <input name="password" class="form-control" type="password" autocomplete="current-password" required>
         </div>
-        <p>Have no account? Register <a href="#">here</a></p>
+        <p>Have no account? Register <a href="{{basePath}}/register">here</a></p>
         <button class="btn btn-primary mb-3" type="submit">Sign in</button>
     </form>
 </div>

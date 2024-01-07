@@ -1,5 +1,5 @@
 import errors from "../web/errors.mjs";
-import {isPositiveInteger} from "../utils.mjs";
+import {isPositiveInteger, wrapper} from "../utils.mjs";
 
 export default function(groupsData, eventsData){
     if(!groupsData)
@@ -7,9 +7,9 @@ export default function(groupsData, eventsData){
     if(!eventsData)
         throw errors.INVALID_PARAMETER("eventData")
     return {
-        getPopularEvents: getPopularEvents,
-        getEventByName: getEventByName,
-        getEvent: getEvent
+        getPopularEvents: wrapper(getPopularEvents),
+        getEventByName: wrapper(getEventByName),
+        getEvent: wrapper(getEvent),
     }
 
     async function getPopularEvents(limit, page){

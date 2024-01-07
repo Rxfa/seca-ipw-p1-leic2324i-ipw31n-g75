@@ -41,7 +41,6 @@ export default async function(indexName = "groups"){
     }
 
     async function updateGroup(ownerID, groupID, updatedGroup) {
-        //delete updatedGroup.id
         return await post(URI_MANAGER.update(groupID), {doc: updatedGroup}).then(updatedGroup)
     }
 

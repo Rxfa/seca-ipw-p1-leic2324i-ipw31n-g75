@@ -1,12 +1,11 @@
 import toHttpErrorResponse from "./response-errors.mjs";
 import errors from "../errors.mjs";
-import {isValidToken} from "../../utils.mjs";
+import {isValidToken, wrapper} from "../../utils.mjs";
 
 
 export default function (services){
-    if (!services){
+    if (!services)
         throw errors.INVALID_PARAMETER("groupServices")
-    }
     return {
         listGroups: wrapper(listGroups),
         getGroup: wrapper(getGroup),
@@ -71,22 +70,4 @@ export default function (services){
         }
     }
 
-    function wrapper(_func) {
-        return async function(req, res){
-            const auth_header = req.headers["authorization"]
-            if(!isValidToken(auth_header)){
-                return res.status(401).json({
-                    error: "Missing or invalid authentication token"
-                })
-            }
-            req.token = auth_header.split(" ")[1]
-            try {
-                const body = await _func(req, res)
-                res.status(200).json(body)
-            } catch (e) {
-                const response = toHttpErrorResponse(e)
-                res.status(response.status).json(response.body)
-            }
-        }
-    }
 }
