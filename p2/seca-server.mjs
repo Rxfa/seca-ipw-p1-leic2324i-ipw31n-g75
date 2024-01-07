@@ -73,8 +73,16 @@ function verifyAuth(req, res, next) {
 passport.serializeUser(serializerUserDeserializeUser)
 passport.deserializeUser(serializerUserDeserializeUser)
 
-// Site routes
 app.use(siteLoggedBaseUrl, verifyAuth)
+
+function setHbsGlobalVariables(req, res, next) {
+    res.locals.basePath = siteBasePath
+    res.locals.loggedUser = req.user || undefined;
+    next();
+}
+app.use("/", setHbsGlobalVariables)
+
+// Site routes
 app.get(siteBasePath, site.getHome)
 
 app.route("/login")

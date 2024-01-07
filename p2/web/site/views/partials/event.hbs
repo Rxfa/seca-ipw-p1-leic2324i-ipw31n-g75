@@ -5,7 +5,7 @@
         </div>
         <div class="col-md-8">
             {{#if groupId}}
-                <form method="post" action="/groups/removeEvent">
+                <form method="post" action="site/groups/removeEvent">
                     <input type="hidden" name="groupId" value="{{groupId}}">
                     <input type="hidden" name="eventId" value="{{id}}">
                     <button
