@@ -75,8 +75,10 @@ export default function (usersServices, groupServices, eventServices){
     }
     async function validateLogin(username, password){
         const user = await usersServices.getUserByUsername(username)
-        if(user)
+        console.log("login - user", user)
+        if(user){
             return user.username === username && user.password === password
+        }
         return false
     }
 
@@ -89,8 +91,11 @@ export default function (usersServices, groupServices, eventServices){
             username: req.body.username,
             password: req.body.password
         }
-        if(await usersServices.createUser(req.body.username, req.body.password))
+        console.log("user - user ", user)
+        if(!(await usersServices.getUserByUsername(req.body.username))){
+            await usersServices.createUser(req.body.username, req.body.password)
             res.redirect(`${siteBasePath}/login`)
+        }
         res.redirect(`${siteBasePath}/register`)
     }
 
@@ -183,11 +188,11 @@ export default function (usersServices, groupServices, eventServices){
     function wrapper(func){
         return async function(req, res){
             try {
-                console.log("wrapper - user", req.user)
                 if(req.user){
                     req.token = (await usersServices.getUserByUsername(req.user.username)).token
                     console.log("wrapper - token", req.token)
                 }
+                console.log("wrapper - user", req.user)
                 const view = await func(req, res)
                 if(view){
                     res.render(view.name, view.data)

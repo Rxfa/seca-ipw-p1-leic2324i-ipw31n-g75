@@ -63,12 +63,12 @@ app.route("/login")
     .get(site.getLogin)
     .post(site.login)
 
-app.route("/logout")
-    .post(site.logout)
-
 app.route("/register")
     .get(site.getRegister)
     .post(site.register)
+
+app.route(`${siteLoggedBaseUrl}/logout`)
+    .post(site.logout)
 
 app.route(`${siteLoggedBaseUrl}/groups`)
     .get(site.listGroups)

@@ -21,11 +21,11 @@ export default async function(indexName = "users"){
     }
 
     async function getUserByToken(token){
-        return getUserBy("token", token)
+        return await getUserBy("token", token)
     }
 
     async function getUserByUsername(username){
-        return getUserBy("username", username)
+        return await getUserBy("username", username)
     }
 
     async function createUser(username, password){
@@ -52,7 +52,7 @@ export default async function(indexName = "users"){
 
     async function getUserBy(prop, value){
         const uri = `${URI_MANAGER.list()}?q=${prop}:${value}`
-        return get(uri).then(body => body["hits"]["hits"].map(transformUser))
+        return get(uri).then(body => body["hits"]["hits"].map(transformUser)[0])
     }
 
     function transformUser(userElastic){

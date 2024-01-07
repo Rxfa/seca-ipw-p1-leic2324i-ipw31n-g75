@@ -9,6 +9,7 @@ export default function(services){
         throw errors.INVALID_PARAMETER("usersServices")
     return {
         insertUser,
+        createUser,
         updateUser: wrapper(updateUser),
         deleteUser: wrapper(deleteUser),
     }
