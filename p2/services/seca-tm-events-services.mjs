@@ -7,9 +7,9 @@ export default function(groupsData, eventsData){
     if(!eventsData)
         throw errors.INVALID_PARAMETER("eventData")
     return {
-        getPopularEvents: wrapper(getPopularEvents),
-        getEventByName: wrapper(getEventByName),
-        getEvent: wrapper(getEvent),
+        getPopularEvents: getPopularEvents,
+        getEventByName: getEventByName,
+        getEvent: getEvent,
     }
 
     async function getPopularEvents(limit, page){

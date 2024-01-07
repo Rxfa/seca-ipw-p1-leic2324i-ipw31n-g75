@@ -1,4 +1,4 @@
-import {siteBasePath, siteLoggedBaseUrl} from "./config.mjs";
+import {siteBasePath, siteLoggedBasePath} from "./config.mjs";
 
 export function verifyAuth(req, res, next) {
     console.log("verifyAuth", req.user)
@@ -9,7 +9,7 @@ export function verifyAuth(req, res, next) {
 
 export function setHbsGlobalVariables(req, res, next) {
     res.locals.basePath = siteBasePath
-    res.locals.loggedBasePath = siteLoggedBaseUrl
+    res.locals.loggedBasePath = siteLoggedBasePath
     res.locals.loggedUser = req.user || undefined;
     next();
 }

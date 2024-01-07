@@ -27,6 +27,7 @@ export default function(userData){
 
     async function updateUser(token, data){
         const user = await userData.getUserByToken(token)
+        console.log(user)
         if(!user)
             throw errors.USER_NOT_FOUND()
         if(!isValidString(data.username))

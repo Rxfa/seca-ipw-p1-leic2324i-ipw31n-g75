@@ -12,7 +12,7 @@ import {
     port,
     site,
     siteBasePath,
-    siteLoggedBaseUrl,
+    siteLoggedBasePath,
     swaggerDoc,
     userApi,
     viewsDir
@@ -47,7 +47,7 @@ app.use("/", express.static("./web/site/public"))
 passport.serializeUser(serializerUserDeserializeUser)
 passport.deserializeUser(serializerUserDeserializeUser)
 
-app.use(siteLoggedBaseUrl, verifyAuth)
+app.use(siteLoggedBasePath, verifyAuth)
 
 app.use("/", setHbsGlobalVariables)
 
@@ -63,25 +63,35 @@ app.route("/login")
     .get(site.getLogin)
     .post(site.login)
 
+
 app.route("/register")
     .get(site.getRegister)
     .post(site.register)
 
-app.route(`${siteLoggedBaseUrl}/logout`)
+app.route(`${siteLoggedBasePath}/update`)
+    .post(site.updateUser)
+
+app.route(`${siteLoggedBasePath}/delete`)
+    .post(site.deleteUser)
+
+app.route(`${siteLoggedBasePath}/logout`)
     .post(site.logout)
 
-app.route(`${siteLoggedBaseUrl}/groups`)
+app.route(`${siteLoggedBasePath}/groups`)
     .get(site.listGroups)
     .post(site.createGroup)
 
-app.get(`${siteLoggedBaseUrl}/groups/:id`, site.getGroup)
-app.post(`${siteLoggedBaseUrl}/groups/update`, site.updateGroup)
-app.post(`${siteLoggedBaseUrl}/groups/delete`, site.deleteGroup)
-app.get(`${siteLoggedBaseUrl}/events`, site.eventSearch)
-app.get(`${siteLoggedBaseUrl}/events/popular`, site.getPopularEvents)
-app.get(`${siteLoggedBaseUrl}/events/search`, site.getEventsByName)
-app.post(`${siteLoggedBaseUrl}/groups/addEvent`, site.addEvent)
-app.post(`${siteLoggedBaseUrl}/groups/removeEvent`, site.removeEvent)
+app.route(`${siteLoggedBasePath}/profile`)
+    .get(site.profile)
+
+app.get(`${siteLoggedBasePath}/groups/:id`, site.getGroup)
+app.post(`${siteLoggedBasePath}/groups/update`, site.updateGroup)
+app.post(`${siteLoggedBasePath}/groups/delete`, site.deleteGroup)
+app.get(`${siteLoggedBasePath}/events`, site.eventSearch)
+app.get(`${siteLoggedBasePath}/events/popular`, site.getPopularEvents)
+app.get(`${siteLoggedBasePath}/events/search`, site.getEventsByName)
+app.post(`${siteLoggedBasePath}/groups/addEvent`, site.addEvent)
+app.post(`${siteLoggedBasePath}/groups/removeEvent`, site.removeEvent)
 
 
 // API routes

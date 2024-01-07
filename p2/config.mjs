@@ -29,7 +29,7 @@ export const tmBaseUrl = "https://app.ticketmaster.com/discovery/v2"
 export const apiBaseUrl = "/api"
 export const apiLoggedBaseUrl = `${apiBaseUrl}/cmdb`
 export const siteBasePath = ""
-export const siteLoggedBaseUrl = `${siteBasePath}/site`
+export const siteLoggedBasePath = `${siteBasePath}/site`
 const currentPath = url.fileURLToPath(new URL(".", import.meta.url))
 
 // Docs

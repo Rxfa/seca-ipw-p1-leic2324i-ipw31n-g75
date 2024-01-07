@@ -1,5 +1,5 @@
 <div class="justify-content-center align-items-center text-center my-5">
-    <form method="POST" action="{{action}}" class="g-3">
+    <form method="POST" action="/site{{action}}" class="g-3">
         <input type="hidden" name="id" id="id" value="{{groupId}}">
         <div class="input-group mb-3">
             <span class="input-group-text" >Name</span>
@@ -15,7 +15,7 @@
         </div>
     </form>
     {{#if isDeletable}}
-        <form action="/groups/delete" method="post">
+        <form action="/site/groups/delete" method="post">
             <input type="hidden" name="id" id="id" value="{{groupId}}">
             <div class="row justify-content-center">
                 <button type="submit" class="btn btn-danger mb-3" onclick="return confirm('Are you sure?')">

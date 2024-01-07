@@ -1,5 +1,5 @@
 import url from 'url';
-import {siteBasePath, siteLoggedBaseUrl, userToken} from "../../config.mjs";
+import {siteBasePath, siteLoggedBasePath, userToken} from "../../config.mjs";
 import errors from "../errors.mjs";
 import toHttpErrorResponse from "../api/response-errors.mjs";
 
@@ -48,7 +48,7 @@ export default function (usersServices, groupServices, eventServices){
     }
 
     async function getHome(req, res){
-        req.user ? res.redirect(`${siteLoggedBaseUrl}/groups`) : res.redirect(`${siteBasePath}/login`)
+        req.user ? res.redirect(`${siteLoggedBasePath}/groups`) : res.redirect(`${siteBasePath}/login`)
     }
 
     async function profile(req, res){
@@ -68,7 +68,7 @@ export default function (usersServices, groupServices, eventServices){
                 username: username,
                 password: password
             }
-            req.login(user, () => res.redirect(`${siteLoggedBaseUrl}/groups`))
+            req.login(user, () => res.redirect(`${siteLoggedBasePath}/groups`))
         } else {
             res.redirect(`${siteBasePath}/login`)
         }
@@ -109,13 +109,12 @@ export default function (usersServices, groupServices, eventServices){
             username: req.body.username,
             password: req.body.password
         }
-        await usersServices.updateUser(req.token, user)
-        res.redirect(`${siteLoggedBaseUrl}/profile`)
+        (await usersServices.updateUser(req.token, user)).then(req.logout((err) => ))
     }
 
     async function deleteUser(req, res){
         await usersServices.deleteUser(req.token)
-        res.redirect(`${siteBasePath}/login`)
+        await logout(req, res)
     }
 
     async function listGroups(req, res){
@@ -130,19 +129,19 @@ export default function (usersServices, groupServices, eventServices){
 
     async function createGroup(req, res){
         await groupServices.createGroup(req.token, req.body)
-        res.redirect(`${siteLoggedBaseUrl}/groups`)
+        res.redirect(`${siteLoggedBasePath}/groups`)
     }
 
     async function deleteGroup(req, res){
         await groupServices.deleteGroup(req.token, req.body.id)
-        res.redirect(`${siteLoggedBaseUrl}/groups`)
+        res.redirect(`${siteLoggedBasePath}/groups`)
     }
 
     async function updateGroup(req, res){
         console.log(req.body)
         const groupId = req.body.id
         await groupServices.updateGroup(req.token, groupId, req.body)
-        res.redirect(`${siteLoggedBaseUrl}/groups/${groupId}`)
+        res.redirect(`${siteLoggedBasePath}/groups/${groupId}`)
     }
 
     async function getPopularEvents(req, res){
@@ -153,6 +152,7 @@ export default function (usersServices, groupServices, eventServices){
 
     async function getEventsByName(req, res){
         const events = await eventServices.getEventByName(req.query.name, req.query.limit, req.query.page)
+        console.log("here")
         const groups = await groupServices.listGroups(req.token)
         return new View("events", {events: events, groups: groups})
     }
@@ -170,14 +170,14 @@ export default function (usersServices, groupServices, eventServices){
         console.log(req.body)
         const groupId = req.body.groupId
         await groupServices.addEvent(req.token, req.body.eventId, groupId)
-        res.redirect(`${siteLoggedBaseUrl}/groups/${groupId}`)
+        res.redirect(`${siteLoggedBasePath}/groups/${groupId}`)
     }
 
     async function removeEvent(req, res){
         console.log("here")
         const groupId = req.body.groupId
         await groupServices.removeEvent(req.token, req.body.eventId, groupId)
-        res.redirect(`${siteLoggedBaseUrl}/groups/${groupId}`)
+        res.redirect(`${siteLoggedBasePath}/groups/${groupId}`)
     }
 
     function sendFile(fileName, res){
