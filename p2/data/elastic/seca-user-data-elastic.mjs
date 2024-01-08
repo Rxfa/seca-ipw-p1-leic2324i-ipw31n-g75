@@ -1,15 +1,17 @@
 import {randomUUID} from "crypto";
 import uriManager from "./uri-manager.mjs";
-import {get, post} from "./elastic.mjs";
+import {del, get, post} from "./elastic.mjs";
 
 export default async function(indexName = "users"){
     const URI_MANAGER = await uriManager(indexName)
 
     return {
         listUsers,
-        getUser,
-        findUser,
-        createUser
+        getUserByToken,
+        getUserByUsername,
+        createUser,
+        updateUser,
+        deleteUser
     }
 
     async function listUsers(){
@@ -18,30 +20,39 @@ export default async function(indexName = "users"){
         return Promise.all(res)
     }
 
-    async function getUser(token){
-        return getUserBy("token", token)
+    async function getUserByToken(token){
+        return await getUserBy("token", token)
     }
 
-    async function findUser(username){
-        return getUserBy("username", username)
+    async function getUserByUsername(username){
+        return await getUserBy("username", username)
     }
 
-    async function createUser(username){
+    async function createUser(username, password){
         const newUser = {
             username: username,
+            password: password,
             token: randomUUID()
         }
-        await post(URI_MANAGER.create(), newUser)
-        return newUser.token
+        const data = await post(URI_MANAGER.create(), newUser)
+        newUser.id = data["_id"]
+        return newUser;
+    }
+
+    async function updateUser(id, updatedUser){
+        return await post(URI_MANAGER.update(id), {doc: updatedUser}).then(updatedUser)
+    }
+
+    async function deleteUser(id){
+        return await del(URI_MANAGER.delete(id)).then(body => {
+            if(body["result"] !== "not_found")
+                return body["_id"]
+        })
     }
 
     async function getUserBy(prop, value){
         const uri = `${URI_MANAGER.list()}?q=${prop}:${value}`
-        return get(uri).then(body => {
-            const ans = body["hits"]["hits"].map(transformUser)
-            if(ans.length === 1)
-                return ans[0]
-        })
+        return get(uri).then(body => body["hits"]["hits"].map(transformUser)[0])
     }
 
     function transformUser(userElastic){

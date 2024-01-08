@@ -2,7 +2,7 @@
     <h1 class="my-5 display-1">Results search</h1>
     {{#each events}}
         <div class="justify-content-center align-items-center mb-5">
-            <form action="/groups/addEvent" method="post" id="addEvent" class="row g-2">
+            <form action="/site/groups/addEvent" method="post" id="addEvent" class="row g-2">
                     {{> event}}
                     <input type="hidden" name="eventId" value="{{id}}">
                     <select name="groupId" class="form-select">

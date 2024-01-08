@@ -1,26 +1,39 @@
 import url from 'url';
-import {userToken} from "../../config.mjs";
+import {siteBasePath, siteLoggedBasePath} from "../../config.mjs";
 import errors from "../errors.mjs";
 import toHttpErrorResponse from "../api/response-errors.mjs";
 
 
 const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 
-function View(name, data){
+function View(name, data = {}){
     return {
         name: name,
         data: data
     }
 }
 
-export default function (groupServices, eventServices){
+export default function (usersServices, groupServices, eventServices){
     if(!groupServices){
         throw errors.INVALID_PARAMETER("GroupServices")
+    }
+    if(!usersServices){
+        throw errors.INVALID_PARAMETER("UsersServices")
+    }
+    if(!eventServices){
+        throw errors.INVALID_PARAMETER("EventServices")
     }
 
     return {
         getHome: getHome,
-        getCss: getCss,
+        profile: wrapper(profile),
+        getLogin: wrapper(getLogin),
+        login: wrapper(login),
+        logout: wrapper(logout),
+        getRegister: wrapper(getRegister),
+        register: wrapper(register),
+        updateUser: wrapper(updateUser),
+        deleteUser: wrapper(deleteUser),
         listGroups: wrapper(listGroups),
         getGroup: wrapper(getGroup),
         createGroup: wrapper(createGroup),
@@ -35,11 +48,73 @@ export default function (groupServices, eventServices){
     }
 
     async function getHome(req, res){
-        return new View("groups", {})
+        req.user ? res.redirect(`${siteLoggedBasePath}/groups`) : res.redirect(`${siteBasePath}/login`)
     }
 
-    async function getCss(req, res){
-        sendFile("site.css", res)
+    async function profile(req, res){
+        const groups = await groupServices.listGroups(req.token)
+        return new View("profile", groups)
+    }
+
+    async function getLogin(req, res){
+        return new View("login")
+    }
+
+    async function login(req, res){
+        const username = req.body.username
+        const password = req.body.password
+        if(await validateLogin(username, password)){
+            const user = {
+                username: username,
+                password: password
+            }
+            req.login(user, () => res.redirect(`${siteLoggedBasePath}/groups`))
+        } else {
+            res.redirect(`${siteBasePath}/login`)
+        }
+    }
+    async function validateLogin(username, password){
+        const user = await usersServices.getUserByUsername(username)
+        console.log("login - user", user)
+        if(user){
+            return user.username === username && user.password === password
+        }
+        return false
+    }
+
+    async function getRegister(req, res){
+        return new View("register")
+    }
+
+    async function register(req, res){
+        const user = {
+            username: req.body.username,
+            password: req.body.password
+        }
+        console.log("user - user ", user)
+        if(!(await usersServices.getUserByUsername(req.body.username))){
+            await usersServices.createUser(req.body.username, req.body.password)
+            res.redirect(`${siteBasePath}/login`)
+        }
+        res.redirect(`${siteBasePath}/register`)
+    }
+
+    async function logout(req, res){
+        req.logout(() => {
+            res.redirect(`${siteBasePath}/login`)
+        })
+    }
+
+    async function updateUser(req, res){
+        const user = {
+            username: req.body.username,
+            password: req.body.password
+        }
+        await usersServices.updateUser(req.token, user).then(req.logout(() => res.redirect(`${siteBasePath}/login`)))
+    }
+
+    async function deleteUser(req, res){
+        await usersServices.deleteUser(req.token).then(req.logout(() => res.redirect(`${siteBasePath}/login`)))
     }
 
     async function listGroups(req, res){
@@ -54,19 +129,19 @@ export default function (groupServices, eventServices){
 
     async function createGroup(req, res){
         await groupServices.createGroup(req.token, req.body)
-        res.redirect("/groups")
+        res.redirect(`${siteLoggedBasePath}/groups`)
     }
 
     async function deleteGroup(req, res){
         await groupServices.deleteGroup(req.token, req.body.id)
-        res.redirect("/groups")
+        res.redirect(`${siteLoggedBasePath}/groups`)
     }
 
     async function updateGroup(req, res){
         console.log(req.body)
         const groupId = req.body.id
         await groupServices.updateGroup(req.token, groupId, req.body)
-        res.redirect(`/groups/${groupId}`)
+        res.redirect(`${siteLoggedBasePath}/groups/${groupId}`)
     }
 
     async function getPopularEvents(req, res){
@@ -77,6 +152,7 @@ export default function (groupServices, eventServices){
 
     async function getEventsByName(req, res){
         const events = await eventServices.getEventByName(req.query.name, req.query.limit, req.query.page)
+        console.log("here")
         const groups = await groupServices.listGroups(req.token)
         return new View("events", {events: events, groups: groups})
     }
@@ -87,21 +163,21 @@ export default function (groupServices, eventServices){
     }
 
     async function eventSearch(req, res){
-        return new View("searchEvent", {})
+        return new View("searchEvent")
     }
 
     async function addEvent(req, res){
         console.log(req.body)
         const groupId = req.body.groupId
         await groupServices.addEvent(req.token, req.body.eventId, groupId)
-        res.redirect(`/groups/${groupId}`)
+        res.redirect(`${siteLoggedBasePath}/groups/${groupId}`)
     }
 
     async function removeEvent(req, res){
         console.log("here")
         const groupId = req.body.groupId
         await groupServices.removeEvent(req.token, req.body.eventId, groupId)
-        res.redirect(`/groups/${groupId}`)
+        res.redirect(`${siteLoggedBasePath}/groups/${groupId}`)
     }
 
     function sendFile(fileName, res){
@@ -109,10 +185,14 @@ export default function (groupServices, eventServices){
         res.sendFile(filePath)
     }
 
-    function wrapper(func) {
+    function wrapper(func){
         return async function(req, res){
-            req.token = userToken
             try {
+                if(req.user){
+                    req.token = (await usersServices.getUserByUsername(req.user.username)).token
+                    console.log("wrapper - token", req.token)
+                }
+                console.log("wrapper - user", req.user)
                 const view = await func(req, res)
                 if(view){
                     res.render(view.name, view.data)

@@ -1,4 +1,8 @@
+import errors from "../errors.mjs";
+
 export default function(services){
+    if (!services)
+        throw errors.INVALID_PARAMETER("groupServices")
     return {
         getPopularEvents: getPopularEvents,
         getEventByName: getEventByName

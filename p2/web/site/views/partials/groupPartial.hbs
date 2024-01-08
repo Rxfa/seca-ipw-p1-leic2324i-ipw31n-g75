@@ -1,11 +1,11 @@
 <div class="card">
     <div class="card-body text-center">
-        <form method="POST" action="/groups/delete">
+        <form method="POST" action="/site/groups/delete">
             <h2 class="card-title display-2">{{name}}</h2>
             <h3 class="card-subtitle mb-2 text-body-secondary">{{description}}</h3>
             <input type="hidden" value="{{id}}" name="id">
             <div class="d-flex flex-column gap-2">
-                <a class="btn btn-primary" href="/groups/{{id}}">Edit</a>
+                <a class="btn btn-primary" href="/site/groups/{{id}}">Edit</a>
                 <button class="btn btn-danger" type="submit">Delete</button>
             </div>
         </form>

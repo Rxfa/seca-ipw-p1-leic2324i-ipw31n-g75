@@ -11,7 +11,7 @@ tags:
   - name: Groups
   - name: Events
 paths:
-  /api/users:
+  /api/seca/users:
     description: The resource that contains all users
     post:
       tags:
@@ -42,7 +42,7 @@ paths:
         400:
           description: Invalid input
           content: {}
-  /api/groups:
+  /api/seca/groups:
     description: Resource that contains all Groups
     get:
       tags:
@@ -95,7 +95,7 @@ paths:
         404:
           $ref: "#/components/responses/404NotFound"
 
-  /api/groups/:GroupId:
+  /api/seca/groups/:GroupId:
     description: The resource that represents one Group
     get:
       tags:
@@ -233,7 +233,7 @@ paths:
           $ref: "#/components/responses/401Unauthorized"
         404:
           $ref: "#/components/responses/404NotFound"
-  /api/groups/:GroupId/:eventId:
+  /api/seca/groups/:GroupId/:eventId:
     delete:
       tags:
         - Groups
@@ -270,7 +270,7 @@ paths:
           $ref: "#/components/responses/401Unauthorized"
         404:
           $ref: "#/components/responses/404NotFound"
-  /api/events:
+  /api/seca/events:
     description: the resource that get all Events
     get:
       tags:
@@ -302,7 +302,7 @@ paths:
                 items:
                   $ref: "#/components/schemas/Event"
 
-  /api/events/:name:
+  /api/seca/events/:name:
     get:
       tags:
         - Events
@@ -381,10 +381,14 @@ components:
       type: object
       required:
         - username
+        - password
       properties:
         username:
           type: string
           example: testUsername
+        password:
+            type: string
+            example: testPassword
     Event:
       type: object
       required:

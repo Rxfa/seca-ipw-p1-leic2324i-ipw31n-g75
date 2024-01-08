@@ -13,7 +13,7 @@ const groupServices = groupServicesInit(groupData, usersData, eventsData)
 describe("Test groups", function() {
     describe("Create group", function () {
         it("Group can be created with valid data", async function () {
-            const token = await userServices.createUser(utils.randomString(6))
+            const token = (await userServices.createUser(utils.randomString(6), utils.randomString(6))).token
             const group = {
                 name: utils.randomString(5),
                 description: utils.randomString(15)
@@ -32,7 +32,7 @@ describe("Test groups", function() {
         })
 
         it("Throws if given an invalid group name", async function () {
-            const token = await userServices.createUser(utils.randomString(6))
+            const token = (await userServices.createUser(utils.randomString(6), utils.randomString(6))).token
             const group = utils.randomGroup()
             group.name = ""
             try {
@@ -44,8 +44,8 @@ describe("Test groups", function() {
     })
     describe("List groups", function (){
         it("Only returns groups owned by user", async function() {
-            const token1 = await userServices.createUser(utils.randomString(6))
-            const token2 = await userServices.createUser(utils.randomString(6))
+            const token1 = (await userServices.createUser(utils.randomString(6), utils.randomString(6))).token
+            const token2 = (await userServices.createUser(utils.randomString(6), utils.randomString(6))).token
             await groupServices.createGroup(token1, utils.randomGroup())
             await groupServices.createGroup(token2, utils.randomGroup())
             expect(await groupServices.listGroups(token1)).to.have.length(1)
@@ -55,14 +55,14 @@ describe("Test groups", function() {
 
     describe("Delete group", function (){
         it("Groups can be deleted", async function(){
-            const token = await userServices.createUser(utils.randomString(6))
+            const token = (await userServices.createUser(utils.randomString(6), utils.randomString(6))).token
             const group = await groupServices.createGroup(token, utils.randomGroup())
             expect(await groupServices.deleteGroup(token, group.id))
             expect(await groupServices.listGroups(token)).to.have.length(0)
         })
 
         it("Throws if a non-existing group is deleted", async function(){
-            const token = await userServices.createUser(utils.randomString(6))
+            const token = (await userServices.createUser(utils.randomString(6), utils.randomString(6))).token
             const id = 5
             try {
                 await groupServices.deleteGroup(token, id)
@@ -72,8 +72,8 @@ describe("Test groups", function() {
         })
 
         it("Throws if user tries to delete a group they don't own", async function(){
-            const token1 = await userServices.createUser(utils.randomString(6))
-            const token2 = await userServices.createUser(utils.randomString(6))
+            const token1 = (await userServices.createUser(utils.randomString(6), utils.randomString(6))).token
+            const token2 = (await userServices.createUser(utils.randomString(6), utils.randomString(6))).token
             await groupServices.createGroup(token1, utils.randomGroup())
             try {
                 await groupServices.deleteGroup(token2, 1)
@@ -84,7 +84,7 @@ describe("Test groups", function() {
     })
     describe("Update group", function (){
         it("Group can be changed", async function(){
-            const token = await userServices.createUser(utils.randomString(6))
+            const token = (await userServices.createUser(utils.randomString(6), utils.randomString(6))).token
             const group = await groupServices.createGroup(token, utils.randomGroup())
             const newGroup = utils.randomGroup()
             expect(await groupServices.updateGroup(token, group.id, newGroup)).to.be.deep.equal({
@@ -97,8 +97,8 @@ describe("Test groups", function() {
         })
 
         it("Throws if a user tries to change a group not owned by them", async  function(){
-            const token = await userServices.createUser(utils.randomString(6))
-            const token2 = await userServices.createUser(utils.randomString(6))
+            const token = (await userServices.createUser(utils.randomString(6), utils.randomString(6))).token
+            const token2 = (await userServices.createUser(utils.randomString(6), utils.randomString(6))).token
             const group = await groupServices.createGroup(token, utils.randomGroup())
             try {
                 await groupServices.updateGroup(token2, group.id, utils.randomGroup())
@@ -110,14 +110,14 @@ describe("Test groups", function() {
     describe("Add and remove events from group", function (){
         const eventId = "G5v0Z9Yc3YZz9"
         it("Event can be added to group", async function(){
-            const token = await userServices.createUser(utils.randomString(6))
+            const token = (await userServices.createUser(utils.randomString(6), utils.randomString(6))).token
             const group = await groupServices.createGroup(token, utils.randomGroup())
             const event = await groupServices.addEvent(token, eventId, group.id)
             expect((await groupServices.getGroup(token, group.id)).events).to.include(event)
         })
 
         it("Throws if event being added is already in group", async function(){
-            const token = await userServices.createUser(utils.randomString(6))
+            const token = (await userServices.createUser(utils.randomString(6), utils.randomString(6))).token
             const group = await groupServices.createGroup(token, utils.randomGroup())
             const event = await groupServices.addEvent(token, eventId, group.id)
             try{
@@ -128,7 +128,7 @@ describe("Test groups", function() {
         })
 
         it("Event can be removed from group", async function(){
-            const token = await userServices.createUser(utils.randomString(6))
+            const token = (await userServices.createUser(utils.randomString(6), utils.randomString(6))).token
             const group = await groupServices.createGroup(token, utils.randomGroup())
             await groupServices.addEvent(token, eventId, group.id)
             await groupServices.removeEvent(token, eventId, group.id)
@@ -137,7 +137,7 @@ describe("Test groups", function() {
         })
 
         it("Throws if user tries to remove event not in group", async function(){
-            const token = await userServices.createUser(utils.randomString(6))
+            const token = (await userServices.createUser(utils.randomString(6), utils.randomString(6))).token
             const group = await groupServices.createGroup(token, utils.randomGroup())
             try {
                 await groupServices.removeEvent(token, eventId, group.id)
@@ -146,6 +146,4 @@ describe("Test groups", function() {
             }
         })
     })
-
-
 })

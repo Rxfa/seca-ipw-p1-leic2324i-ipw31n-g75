@@ -45,16 +45,19 @@ export async function createGroup(ownerID, group){
 }
 
 export async function addEvent(ownerId, groupId, event){
-    return findGroupAndDoSomething(ownerId, groupId, group => {
-        if(group.events.find(e => e.id === event.id) === undefined){
-            group.events.push(event)
-            return event
-        }
+    console.log("hereeeeee", groupId)
+    return findGroupAndDoSomething(ownerId, groupId.id, group => {
+        console.log(group.events)
+        if(group.events.find(e => e.id === event.id))
+            return
+
+        group.events.push(event)
+        return event
     })
 }
 
 export async function removeEvent(ownerId, groupId, eventId){
-    return findGroupAndDoSomething(ownerId, groupId, group => {
+    return findGroupAndDoSomething(ownerId, groupId.id, group => {
         const eventIdx = group.events.findIndex(e => e.id === eventId)
         if(eventIdx !== -1){
             group.events.splice(eventIdx, 1)

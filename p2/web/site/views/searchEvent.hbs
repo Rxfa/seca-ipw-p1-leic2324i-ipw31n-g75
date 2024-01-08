@@ -1,7 +1,7 @@
 <div class="row justify-content-center text-center">
     <h2>Search Event</h2>
     <div class="form-group justify-content-center col-5 mt-3">
-        <form class="p-3" action="/events/search" method="GET">
+        <form class="p-3" action="{{loggedBasePath}}/events/search" method="GET">
             <div class="input-group mb-3">
                 <span class="input-group-text">Event</span>
                 <input type="text" name="name" class="form-control" placeholder="Name" required/>

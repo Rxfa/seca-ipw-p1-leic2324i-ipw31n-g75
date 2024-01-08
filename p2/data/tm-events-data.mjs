@@ -26,10 +26,7 @@ function transformEvent(event){
         name: event["name"],
         date: event["dates"]["start"]["dateTime"],
         imageUrl: event.images.find(image => image["ratio"] === "3_2")["url"],
-        sales: {
-            start: event["sales"]["public"]["startDateTime"],
-            end: event["sales"]["public"]["endDateTime"],
-        },
+        sales: {start: event["sales"]["public"]["startDateTime"], end: event["sales"]["public"]["endDateTime"]},
         segment: strOrUndefined(event["classifications"][0], "segment"),
         genre: strOrUndefined(event["classifications"][0], "genre"),
         subGenre: strOrUndefined(event["classifications"][0], "subGenre")

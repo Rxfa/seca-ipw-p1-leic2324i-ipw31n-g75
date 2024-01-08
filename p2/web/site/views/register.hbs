@@ -1,0 +1,15 @@
+<div class="container-fluid d-flex flex-column text-center gap-3 align-items-center h-100">
+    <h1>Register</h1>
+    <form action="{{basePath}}/register" method="post" class="gap-5">
+        <div class="input-group mb-3">
+            <span class="input-group-text">Username</span>
+            <input name="username" class="form-control" type="text" autocomplete="username" required autofocus>
+        </div>
+        <div class="input-group mb-3">
+            <span class="input-group-text">Password</span>
+            <input name="password" class="form-control" type="password" autocomplete="current-password" required>
+        </div>
+        <p>Already have an account? Sign in <a href="{{basePath}}/login">here</a></p>
+        <button class="btn btn-primary mb-3" type="submit">Create account</button>
+    </form>
+</div>

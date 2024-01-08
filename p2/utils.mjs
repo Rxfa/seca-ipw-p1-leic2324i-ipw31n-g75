@@ -1,3 +1,5 @@
+import toHttpErrorResponse from "./web/api/response-errors.mjs";
+
 const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 
 export function randomString(size){
@@ -45,4 +47,27 @@ export function formatDate(dateStr, dateSep="/", timeSep=":"){
         .map(i => i === 0 ? "00" : i.toString())
         .join(timeSep)
     return `${date} ${time}`
+}
+
+export function serializerUserDeserializeUser(user, done) {
+    done(null, user)
+}
+
+export function wrapper(_func) {
+    return async function(req, res){
+        const auth_header = req.headers["authorization"]
+        if(!isValidToken(auth_header)){
+            return res.status(401).json({
+                error: "Missing or invalid authentication token"
+            })
+        }
+        req.token = auth_header.split(" ")[1]
+        try {
+            const body = await _func(req, res)
+            res.status(200).json(body)
+        } catch (e) {
+            const response = toHttpErrorResponse(e)
+            res.status(response.status).json(response.body)
+        }
+    }
 }
