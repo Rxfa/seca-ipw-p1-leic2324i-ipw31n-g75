@@ -1,22 +1,23 @@
 
 
 ###
-POST http://localhost:3000/users
+POST http://localhost:3000/api/seca/users
 Content-Type: application/json
 
 {
-  "username": "test"
+  "username": "test",
+  "password": "test"
 }
 
 
 ###
-GET http://localhost:3000/groups
+GET http://localhost:3000/api/seca/groups
 Authorization: Bearer {{Token}}
 
 
 
 ###
-POST http://localhost:3000/groups
+POST http://localhost:3000/api/seca/groups
 Content-Type: application/json
 Authorization: Bearer {{Token}}
 
@@ -27,12 +28,12 @@ Authorization: Bearer {{Token}}
 
 
 ###
-GET http://localhost:3000/groups/1
+GET http://localhost:3000/api/seca/groups/1
 Authorization: Bearer {{Token}}
 
 
 ###
-POST http://localhost:3000/groups/1
+POST http://localhost:3000/api/seca/groups/1
 Content-Type: application/json
 Authorization: Bearer {{Token}}
 
@@ -42,7 +43,7 @@ Authorization: Bearer {{Token}}
 
 
 ###
-PUT http://localhost:3000/groups/1
+PUT http://localhost:3000/api/seca/groups/1
 Content-Type: application/json
 Authorization: Bearer {{Token}}
 
@@ -50,18 +51,18 @@ Authorization: Bearer {{Token}}
 
 
 ###
-DELETE http://localhost:3000/groups/1
+DELETE http://localhost:3000/api/seca/groups/1
 Authorization: Bearer {{Token}}
 
 
 ###
-DELETE http://localhost:3000/groups/1/G5v0Z9Yc3YZz9
+DELETE http://localhost:3000/api/seca/1/G5v0Z9Yc3YZz9
 Authorization: Bearer {{Token}}
 
 
 ###
-GET http://localhost:3000/events
+GET http://localhost:3000/api/seca/events
 
 
 ###
-GET http://localhost:3000/events/Chicago
+GET http://localhost:3000/api/seca/events/Chicago

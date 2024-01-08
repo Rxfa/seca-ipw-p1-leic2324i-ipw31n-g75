@@ -1,6 +1,5 @@
 import errors from "../web/errors.mjs";
 import {isValidString} from "../utils.mjs";
-import {apiBaseUrl} from "../config.mjs";
 
 export default function(userData){
     return {
@@ -17,7 +16,6 @@ export default function(userData){
         const user = await userData.getUserByUsername(username)
         if(user)
             throw errors.USERNAME_ALREADY_EXISTS(username)
-
         return await userData.createUser(username, password)
     }
 

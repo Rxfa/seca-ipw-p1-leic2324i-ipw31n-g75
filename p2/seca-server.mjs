@@ -68,11 +68,11 @@ app.route("/register")
     .get(site.getRegister)
     .post(site.register)
 
-app.route(`${siteLoggedBasePath}/update`)
-    .post(site.updateUser)
+//app.route(`${siteLoggedBasePath}/update`)
+//   .post(site.updateUser)
 
-app.route(`${siteLoggedBasePath}/delete`)
-    .post(site.deleteUser)
+//app.route(`${siteLoggedBasePath}/delete`)
+//    .post(site.deleteUser)
 
 app.route(`${siteLoggedBasePath}/logout`)
     .post(site.logout)
@@ -81,8 +81,8 @@ app.route(`${siteLoggedBasePath}/groups`)
     .get(site.listGroups)
     .post(site.createGroup)
 
-app.route(`${siteLoggedBasePath}/profile`)
-    .get(site.profile)
+//app.route(`${siteLoggedBasePath}/profile`)
+//    .get(site.profile)
 
 app.get(`${siteLoggedBasePath}/groups/:id`, site.getGroup)
 app.post(`${siteLoggedBasePath}/groups/update`, site.updateGroup)
@@ -98,8 +98,8 @@ app.post(`${siteLoggedBasePath}/groups/removeEvent`, site.removeEvent)
 
 app.route(`${apiBaseUrl}/users`)
     .post(userApi.insertUser)
-    .put(userApi.updateUser)
-    .delete(userApi.deleteUser)
+    //.put(userApi.updateUser)
+    //.delete(userApi.deleteUser)
 
 app.route(`${apiLoggedBaseUrl}/groups`)
     .get(groupsApi.listGroups)

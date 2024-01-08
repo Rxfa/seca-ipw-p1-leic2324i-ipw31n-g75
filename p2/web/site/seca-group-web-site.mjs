@@ -1,5 +1,5 @@
 import url from 'url';
-import {siteBasePath, siteLoggedBasePath, userToken} from "../../config.mjs";
+import {siteBasePath, siteLoggedBasePath} from "../../config.mjs";
 import errors from "../errors.mjs";
 import toHttpErrorResponse from "../api/response-errors.mjs";
 
@@ -31,7 +31,7 @@ export default function (usersServices, groupServices, eventServices){
         login: wrapper(login),
         logout: wrapper(logout),
         getRegister: wrapper(getRegister),
-        register: wrapper(register ),
+        register: wrapper(register),
         updateUser: wrapper(updateUser),
         deleteUser: wrapper(deleteUser),
         listGroups: wrapper(listGroups),
@@ -100,8 +100,9 @@ export default function (usersServices, groupServices, eventServices){
     }
 
     async function logout(req, res){
-        req.logout()
-        res.redirect(`${siteBasePath}/login`)
+        req.logout(() => {
+            res.redirect(`${siteBasePath}/login`)
+        })
     }
 
     async function updateUser(req, res){
@@ -109,12 +110,11 @@ export default function (usersServices, groupServices, eventServices){
             username: req.body.username,
             password: req.body.password
         }
-        (await usersServices.updateUser(req.token, user)).then(req.logout((err) => ))
+        await usersServices.updateUser(req.token, user).then(req.logout(() => res.redirect(`${siteBasePath}/login`)))
     }
 
     async function deleteUser(req, res){
-        await usersServices.deleteUser(req.token)
-        await logout(req, res)
+        await usersServices.deleteUser(req.token).then(req.logout(() => res.redirect(`${siteBasePath}/login`)))
     }
 
     async function listGroups(req, res){

@@ -1,5 +1,5 @@
 import uriManager from "./uri-manager.mjs";
-import {del, get, post, put} from "./elastic.mjs";
+import {del, get, post} from "./elastic.mjs";
 
 export default async function(indexName = "groups"){
     const URI_MANAGER = await uriManager(indexName)
@@ -23,6 +23,7 @@ export default async function(indexName = "groups"){
 
     async function getGroup(ownerID, groupID){
         const data = await get(URI_MANAGER.get(groupID)).then(transformGroup)
+        console.log(data)
         if(ownerID === data.owner)
             return data
     }
